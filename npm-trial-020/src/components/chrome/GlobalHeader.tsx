@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronRight, LogOut } from "lucide-react";
 import { useDemoDispatch, useDemoState } from "@/state/DemoStateContext";
 import { PERSONAS, actingPersonaFromDef } from "@/data/personas";
 import { activeDealName } from "@/state/selectors";
@@ -94,6 +94,13 @@ export function GlobalHeader() {
           </>
         )}
         <span className="grid h-7 w-7 place-items-center rounded-full bg-[#f5f6f9] text-xs font-bold text-[#444444]">JA</span>
+        <button
+          onClick={() => dispatch({ type: "LOGOUT" })}
+          title="Log out"
+          className={`grid h-7 w-7 place-items-center rounded-md text-[#9a9a9a] hover:bg-[#f5f6f9] hover:text-[#1c1e1a] ${FOCUS}`}
+        >
+          <LogOut className="h-3.5 w-3.5" />
+        </button>
       </div>
     </header>
   );

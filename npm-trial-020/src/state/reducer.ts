@@ -1,3 +1,4 @@
+import { createInitialState } from "./initialState";
 import type {
   ActingPersona,
   CorrectionRecord,
@@ -15,6 +16,7 @@ import type {
 export type DemoAction =
   | { type: "NAVIGATE"; screen: ScreenId }
   | { type: "LOGIN" }
+  | { type: "LOGOUT" }
   | { type: "SET_PERSONA"; persona: ActingPersona }
   | { type: "SET_PRECEDENT_CANDIDATES"; candidates: PrecedentCandidate[] }
   | { type: "SELECT_PRECEDENT"; precedentId: string }
@@ -37,6 +39,11 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
 
     case "LOGIN":
       return { ...state, authenticated: true, screen: "persona-select" };
+
+    case "LOGOUT":
+      // Explicit, presenter-driven reset — not an inactivity timeout (there isn't
+      // one). Returns to a genuinely clean slate, same as a fresh page load.
+      return createInitialState();
 
     case "SET_PERSONA":
       return { ...state, persona: action.persona };
