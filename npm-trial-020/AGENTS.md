@@ -59,7 +59,7 @@ src/
 
   components/
     chrome/                # global, mounted once by AppShell
-      AppShell.tsx  GlobalHeader.tsx  PresenterNav.tsx
+      AppShell.tsx  GlobalHeader.tsx  PresenterDock.tsx
       SpineBar.tsx  SpineStage.tsx
       NextActionsPanel.tsx  NextActionCard.tsx
       ScopeBoundaryNotice.tsx  RedactedField.tsx
@@ -82,7 +82,7 @@ src/
 
 ## Navigation
 
-`state.screen: ScreenId` (11-member union, `state/types.ts`) drives everything. **Do not add `react-router`.** The requirement that a presenter can jump to any moment live, in any order, is better served by a plain switch (`ScreenRouter`) plus an always-visible jump control (`PresenterNav`) than by URL routing.
+`state.screen: ScreenId` (11-member union, `state/types.ts`) drives everything. **Do not add `react-router`.** The requirement that a presenter can jump to any moment live, in any order, is better served by a plain switch (`ScreenRouter`) plus a jump control than by URL routing. That control (`PresenterDock`, `state/momentSequence.ts`) is deliberately *not* header chrome — it's a small unlabeled floating button (bottom-right): click advances to the next moment in `MOMENT_SEQUENCE`, press-and-hold opens the full jump list. The `ArrowRight` keyboard shortcut (wired in `AppShell`, suppressed when a text input has focus) calls the same `nextMomentFrom()` helper — one canonical sequence, two triggers.
 
 The one rule that matters: **navigating to a screen and seeding the state it assumes are the same call.** `useNavigate()` dispatches `NAVIGATE` and fires `momentSeeds.seedScreen()` in the same breath — a cold jump straight to B2 must seed a populated grid with the undefined term focused, identically to arriving there after playing A0→A2→B1. If you add a new moment that needs seed data, add its case to `momentSeeds.ts`, not to the screen component itself.
 
@@ -118,7 +118,7 @@ The one rule that matters: **navigating to a screen and seeding the state it ass
 - Keep screens presentational; keep moment-specific data in `data/` and moment-specific logic in `detectors/`.
 - Reuse `components/shared/*` atoms (`Row`, `Metric`, `Cite`, `Group`) before writing a new one — `GridTermRow` is the one deliberate exception, and it's documented why above.
 - Add a screen's seed logic to `momentSeeds.ts`, keyed by `ScreenId`.
-- Run `npm run dev` after each change and click through the affected moment — a direct PresenterNav jump *and* the sequential flow — before considering it done.
+- Run `npm run dev` after each change and click through the affected moment — a direct jump via `PresenterDock`/ArrowRight *and* the sequential flow — before considering it done.
 
 **Don't**
 - Don't add `react-router`, Redux, Zustand, or any state library — the existing Context+reducer is deliberately sufficient for 11 screens.

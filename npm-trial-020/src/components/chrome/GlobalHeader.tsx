@@ -4,7 +4,6 @@ import { useDemoDispatch, useDemoState } from "@/state/DemoStateContext";
 import { PERSONAS, actingPersonaFromDef } from "@/data/personas";
 import { activeDealName } from "@/state/selectors";
 import { FOCUS } from "@/components/shared/focus";
-import { PresenterNav } from "./PresenterNav";
 
 export function GlobalHeader() {
   const state = useDemoState();
@@ -20,8 +19,6 @@ export function GlobalHeader() {
         <span className="text-sm font-bold tracking-tight text-[#1c1e1a]">Docket</span>
         <ChevronRight className="h-3.5 w-3.5 text-[#bbbbbb]" />
         <span className="text-sm font-medium text-[#7a7a7a]">{dealName}</span>
-        <ChevronRight className="h-3.5 w-3.5 text-[#bbbbbb]" />
-        <PresenterNav />
       </div>
       <div className="relative flex items-center gap-3">
         <button
