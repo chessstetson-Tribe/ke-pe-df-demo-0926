@@ -28,7 +28,7 @@ export function ChatDock() {
         className="flex h-11 w-full flex-none items-center gap-2 px-4 text-left hover:bg-[#f5f6f9]"
       >
         <MessageSquare className="h-3.5 w-3.5 text-[#9e46ff]" />
-        <span className="flex-1 text-sm font-medium text-[#1c1e1a]">Ask counsel — {dealName}</span>
+        <span className="flex-1 text-sm font-medium text-[#1c1e1a]">Ask Docket AI — {dealName}</span>
         {open ? <ChevronDown className="h-4 w-4 text-[#9a9a9a]" /> : <ChevronUp className="h-4 w-4 text-[#9a9a9a]" />}
       </button>
       {open && (
