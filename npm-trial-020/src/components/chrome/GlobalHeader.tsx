@@ -16,7 +16,7 @@ export function GlobalHeader() {
     <header className="z-30 flex flex-none items-center justify-between border-b border-[rgba(0,0,0,0.08)] bg-white px-4 py-2.5">
       <div className="flex items-center gap-2">
         <span className="grid h-6 w-6 place-items-center rounded-md bg-[#444444] text-xs font-bold text-white">D</span>
-        <span className="text-sm font-bold tracking-tight text-[#1c1e1a]">Docket</span>
+        <span className="text-sm font-bold tracking-tight text-[#1c1e1a]">DF Docket</span>
         <ChevronRight className="h-3.5 w-3.5 text-[#bbbbbb]" />
         <span className="text-sm font-medium text-[#7a7a7a]">{dealName}</span>
       </div>

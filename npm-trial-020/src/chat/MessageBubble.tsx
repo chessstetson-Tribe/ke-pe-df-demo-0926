@@ -39,7 +39,7 @@ export function MessageBubble({ message, index }: { message: ChatMessage; index:
         <span className="grid h-7 w-7 flex-none place-items-center rounded-full bg-[#f4eaff] text-xs font-semibold text-[#9e46ff]">
           D
         </span>
-        <span className="text-xs font-medium text-[#7a7a7a]">Docket AI</span>
+        <span className="text-xs font-medium text-[#7a7a7a]">DF Docket AI</span>
         <span className={`rounded-full border px-2 py-0.5 text-xs font-bold ${confColor(confidence)}`}>
           {confidence} confidence
         </span>

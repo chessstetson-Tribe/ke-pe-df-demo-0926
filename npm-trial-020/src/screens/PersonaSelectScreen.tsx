@@ -17,7 +17,7 @@ export function PersonaSelectScreen() {
   return (
     <div className="flex h-screen flex-col items-center justify-center bg-[#f5f6f9] px-6">
       <div className="mb-6 text-center">
-        <div className="font-mono text-[10px] font-semibold uppercase tracking-wide text-[#9a9a9a]">Docket</div>
+        <div className="font-mono text-[10px] font-semibold uppercase tracking-wide text-[#9a9a9a]">DF Docket</div>
         <h1 className="mt-1 text-2xl font-semibold tracking-tight text-[#1c1e1a]">Who's working this matter?</h1>
         <p className="mt-1 text-sm text-[#7a7a7a]">Your choice reshapes what you see and what routes to you.</p>
       </div>

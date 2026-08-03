@@ -12,10 +12,10 @@ export function LoginScreen() {
       <div className="w-full max-w-sm rounded-2xl border border-[rgba(0,0,0,0.08)] bg-white p-8 shadow-[0_14px_34px_rgba(0,0,0,0.1)]">
         <div className="flex items-center gap-2">
           <span className="grid h-8 w-8 place-items-center rounded-md bg-[#444444] text-sm font-bold text-white">D</span>
-          <span className="text-base font-bold tracking-tight text-[#1c1e1a]">Docket</span>
+          <span className="text-base font-bold tracking-tight text-[#1c1e1a]">DF Docket</span>
         </div>
         <p className="mt-4 text-sm leading-relaxed text-[#7a7a7a]">
-          Sign in with your firm identity to continue. Docket authenticates through your existing enterprise
+          Sign in with your firm identity to continue. DF Docket authenticates through your existing enterprise
           directory and ethical-wall configuration.
         </p>
         <button

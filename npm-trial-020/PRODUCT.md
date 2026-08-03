@@ -1,4 +1,4 @@
-# Docket — Product
+# DF Docket — Product
 
 > A K&E Debt Finance pitch demo.
 > The persistent object is **the deal spine** (Precedent → Grid → Term Sheet/Commitment → Credit Agreement → Post-Close), not the conversation — and every AI interaction has to visibly move a deal forward on it.
@@ -9,7 +9,7 @@ This document is the north star. It captures what the product is, why it's shape
 
 ## 1. What this is
 
-Docket is a live-presenter demo proving a specific point of view to a room of debt-finance attorneys: that AI can take retrieval and first-pass extraction off an associate's plate, compress a partner's review to a short triaged list, and give practice leadership a real access-control lever — without ever behaving like an open-ended chatbot.
+DF Docket is a live-presenter demo proving a specific point of view to a room of debt-finance attorneys: that AI can take retrieval and first-pass extraction off an associate's plate, compress a partner's review to a short triaged list, and give practice leadership a real access-control lever — without ever behaving like an open-ended chatbot.
 
 It is **not a chat app**. Chat exists (and is real — it calls the live Anthropic API), but it is constrained: every answer has to cite a specific grid term/clause, and every answer has to end in a deal-forward action (confirm a term, flag something, or state a scope boundary) rather than just informing.
 

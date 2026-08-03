@@ -1,4 +1,4 @@
-# Docket — Agent Guide
+# DF Docket — Agent Guide
 
 Instructions for any AI assistant (Cursor, Claude Code, etc.) working in this repo. Read `PRODUCT.md` first for the vision; this file is the *how*. When a decision isn't covered here, check `KE-Debt-Finance-Demo-Software-Build-Brief.md` and `KE-Debt-Finance-Demo-Moments.md` before inventing behavior — this build exists to satisfy that brief.
 
