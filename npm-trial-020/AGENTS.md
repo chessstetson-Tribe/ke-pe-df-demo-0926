@@ -72,8 +72,8 @@ src/
     A0OpenMatterScreen.tsx  A2ConfirmPrecedentScreen.tsx
     B1GridScreen.tsx  B2UndefinedTermScreen.tsx
     A1SearchScreen.tsx  C1DiffScreen.tsx  E2CrossPracticeScreen.tsx
-    ClosingF1Screen.tsx  ClosingF3Screen.tsx                          # F3 real, F1 placeholder
-    PlaceholderScreen.tsx  ScreenRouter.tsx                            # PlaceholderScreen only backs F1 now
+    ClosingF1Screen.tsx  ClosingF3Screen.tsx
+    ScreenRouter.tsx
 
   App.tsx                  # thin: DemoStateProvider > ChatProvider > AppShell
 ```

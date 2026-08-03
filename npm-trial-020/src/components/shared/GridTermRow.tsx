@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { AlertTriangle } from "lucide-react";
+import { RedactedField } from "@/components/chrome/RedactedField";
 import type { GridTerm } from "@/state/types";
 
 // Deliberately does NOT reuse <Row/> — the brief requires two independent per-term
@@ -52,7 +53,13 @@ export function GridTermRow({
         <div className="min-w-0 flex-1">
           <div className="text-sm font-semibold text-[#1c1e1a]">{term.label}</div>
           <div className="mt-0.5 text-sm text-[#3a3a3a]">
-            {term.value ?? <span className="italic text-[#9a9a9a]">No value extracted</span>}
+            {term.value === null ? (
+              <span className="italic text-[#9a9a9a]">No value extracted</span>
+            ) : term.sensitivity ? (
+              <RedactedField sensitivity={term.sensitivity}>{term.value}</RedactedField>
+            ) : (
+              term.value
+            )}
           </div>
           {term.citation && (
             <div className="mt-1 font-mono text-[10px] text-[#9a9a9a]">

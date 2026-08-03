@@ -52,6 +52,41 @@ export function GlobalHeader() {
                   <span className="text-xs leading-relaxed text-[#7a7a7a]">{def.blurb}</span>
                 </button>
               ))}
+              <div className="mt-1 space-y-1 border-t border-[rgba(0,0,0,0.08)] px-2.5 pt-2 pb-2">
+                <div className="font-mono text-[9px] font-semibold uppercase tracking-wide text-[#bbbbbb]">
+                  Access model (same screens, different visibility)
+                </div>
+                <button
+                  onClick={() =>
+                    dispatch({
+                      type: "SET_PERSONA",
+                      persona: { ...state.persona, onDealTeam: !state.persona.onDealTeam },
+                    })
+                  }
+                  className="flex w-full items-center justify-between rounded-md px-1 py-1 text-left hover:bg-[#f5f6f9]"
+                >
+                  <span className="text-xs font-medium text-[#1c1e1a]">Deal team member</span>
+                  <span className={`rounded-[4px] px-1.5 py-0.5 text-[9px] font-bold uppercase ${state.persona.onDealTeam ? "bg-[#f1ffed] text-[#10793d]" : "bg-[#f3f4f6] text-[#6b7280]"}`}>
+                    {state.persona.onDealTeam ? "Yes" : "No"}
+                  </span>
+                </button>
+                {state.persona.personaId === "associate" && (
+                  <button
+                    onClick={() =>
+                      dispatch({
+                        type: "SET_PERSONA",
+                        persona: { ...state.persona, seniority: state.persona.seniority === "junior" ? "senior" : "junior" },
+                      })
+                    }
+                    className="flex w-full items-center justify-between rounded-md px-1 py-1 text-left hover:bg-[#f5f6f9]"
+                  >
+                    <span className="text-xs font-medium text-[#1c1e1a]">Seniority</span>
+                    <span className="rounded-[4px] bg-[#f5f6f9] px-1.5 py-0.5 text-[9px] font-bold uppercase text-[#444444]">
+                      {state.persona.seniority}
+                    </span>
+                  </button>
+                )}
+              </div>
               <div className="mt-1 border-t border-[rgba(0,0,0,0.08)] px-2.5 pt-2 pb-1 text-xs text-[#bbbbbb]">
                 Switching persona reshapes Next Actions and field visibility on every screen.
               </div>

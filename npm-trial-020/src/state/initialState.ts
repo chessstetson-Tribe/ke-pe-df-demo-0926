@@ -1,4 +1,5 @@
 import { NEW_MATTER } from "@/data/precedentCorpus";
+import { PRIOR_CORRECTIONS } from "@/data/priorCorrections";
 import type { DemoState, SpineStageId, SpineStageStatus } from "./types";
 
 const PRISTINE_SPINE: Record<SpineStageId, SpineStageStatus> = {
@@ -23,7 +24,7 @@ export function createInitialState(): DemoState {
     grid: [],
     focusedGridTermId: null,
     diffFlags: [],
-    corrections: [],
+    corrections: [...PRIOR_CORRECTIONS],
     crossPracticeEvents: [],
     pendingCrossPracticeEvents: [],
     dirty: {},

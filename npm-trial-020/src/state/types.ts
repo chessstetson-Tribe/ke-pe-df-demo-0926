@@ -73,6 +73,7 @@ export interface GridTerm {
   review: ReviewSignal;
   firmDefinition: FirmDefinitionStatus;
   firmDefinitionNote?: string; // populated when firmDefinition === "undefined_by_firm"
+  sensitivity?: FieldSensitivity; // e.g. facility amount is deal-economics; most terms are public
 }
 
 export interface NextActionItem {

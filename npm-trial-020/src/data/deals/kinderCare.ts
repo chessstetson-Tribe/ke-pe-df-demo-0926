@@ -33,6 +33,7 @@ export const kinderCare: DealRecord = {
       grounding: "grounded_in_source",
       review: "confirmed",
       firmDefinition: "defined",
+      sensitivity: "deal-economics",
     },
     {
       id: "kindercare-maturity-date",

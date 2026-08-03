@@ -55,13 +55,13 @@ Anchored on **KinderCare** (Amendment No. 3 to Credit Agreement) — one of 15 r
 
 **Also built (Phase 2):** **A1** (fallback NL document search — the Kirkland/Goldman engagement-letter example, pre-open deal-team/date metadata), **C1** (SunGard term sheet ↔ credit agreement diff, triaged into business issues vs. legal comments with a raw→attorney-relevant→client-shown funnel — Partner's view is filtered, not redacted-in-place, reusing the same `fieldSensitivity` mechanism from Phase 1), **E2** (a mock M&A event feed tied to KinderCare's obligor structure, routed live into the associate's Next-Actions panel on demand).
 
-**Placeholder for now** (Phase 3): the two closing-moment variants — F1 (correction-as-teaching-artifact — partially built: corrections already record reasoning in `state.corrections`, no retrieval-by-similarity screen yet) and F3 (fee-letter scope boundary — fully built, since it only needed the already-built `ScopeBoundaryNotice`). Full persona-based field redaction beyond C1/Dashboard's current coverage.
+**Also built (Phase 3):** both closing-moment variants — **F1** (correction-as-teaching-artifact: a seeded prior correction, plus any correction made live on B1 during the session, resurfaces as a worked example with its reasoning intact whenever the current grid shares a term label — the framing text itself reacts to the viewer's own seniority) and **F3** (fee-letter scope boundary). Redaction coverage extended into B1's grid (facility-amount values carry `sensitivity: "deal-economics"`) and a live "deal team member" / seniority toggle in `GlobalHeader` so the access model's mutual-exclusivity rule is demonstrable independent of which persona is selected.
 
 ---
 
 ## 6. Access model
 
-A deny-list lookup, not a permissions engine (`data/fieldSensitivity.ts`): sponsor identity and deal economics are never both shown to a non-deal-team viewer (policy default: show identity, redact economics), and a junior associate's view is a visible subset of a full associate's (deal economics redacted). Sensitive fields are tagged once, in data, and rendered through a generic `<RedactedField sensitivity="...">` wrapper — any screen gets this for free.
+A deny-list lookup, not a permissions engine (`data/fieldSensitivity.ts`): sponsor identity and deal economics are never both shown to a non-deal-team viewer (policy default: show identity, redact economics), and a junior associate's view is a visible subset of a full associate's (deal economics redacted). Sensitive fields are tagged once, in data — deal records (`sponsor`, `dealSizeUsd`) and individual `GridTerm`s alike — and rendered through a generic `<RedactedField sensitivity="...">` wrapper; any screen gets this for free. `GlobalHeader`'s persona switcher includes live toggles for deal-team membership and associate seniority, so both branches of the policy are demonstrable without leaving the app.
 
 ---
 
