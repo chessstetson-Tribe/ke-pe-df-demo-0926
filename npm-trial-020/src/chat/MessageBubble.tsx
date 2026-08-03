@@ -1,3 +1,4 @@
+import { AlertTriangle } from "lucide-react";
 import { confColor, confFromText, renderCites } from "@/components/shared/Cite";
 import { useDemoDispatch, useDemoState } from "@/state/DemoStateContext";
 import type { NextActionItem } from "@/state/types";
@@ -17,6 +18,7 @@ export function MessageBubble({ message, index }: { message: ChatMessage; index:
     );
   }
 
+  const isUnofficial = message.mode === "unofficial";
   const confidence = message.confidence || confFromText(message.text);
 
   function addToNextActions() {
@@ -40,12 +42,30 @@ export function MessageBubble({ message, index }: { message: ChatMessage; index:
           D
         </span>
         <span className="text-xs font-medium text-[#7a7a7a]">DF Docket AI</span>
-        <span className={`rounded-full border px-2 py-0.5 text-xs font-bold ${confColor(confidence)}`}>
-          {confidence} confidence
-        </span>
+        {isUnofficial ? (
+          <span className="rounded-full border border-transparent bg-[#fef8e7] px-2 py-0.5 text-xs font-bold text-[#b67c2a]">
+            Unofficial
+          </span>
+        ) : (
+          <span className={`rounded-full border px-2 py-0.5 text-xs font-bold ${confColor(confidence)}`}>
+            {confidence} confidence
+          </span>
+        )}
       </div>
-      <div className="mt-2 pl-10 font-serif text-base leading-relaxed text-[#1c1e1a]">{renderCites(message.text)}</div>
-      <div className="mt-2 pl-10">
+
+      {isUnofficial ? (
+        <div className="mt-2 ml-10 rounded-lg border border-[#ffe8b0] bg-[#fffaf0] p-3">
+          <div className="flex items-center gap-1.5 font-mono text-[9px] font-bold uppercase tracking-wide text-[#b67c2a]">
+            <AlertTriangle className="h-3 w-3" />
+            General knowledge — not from this deal's file
+          </div>
+          <div className="mt-1.5 font-serif text-base leading-relaxed text-[#1c1e1a]">{renderCites(message.text)}</div>
+        </div>
+      ) : (
+        <div className="mt-2 pl-10 font-serif text-base leading-relaxed text-[#1c1e1a]">{renderCites(message.text)}</div>
+      )}
+
+      <div className={`mt-2 ${isUnofficial ? "ml-10" : "pl-10"}`}>
         <button
           type="button"
           onClick={addToNextActions}
