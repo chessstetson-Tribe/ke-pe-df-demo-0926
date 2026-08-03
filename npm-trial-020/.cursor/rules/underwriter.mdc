@@ -1,0 +1,8 @@
+---
+description: Underwriter project rules
+alwaysApply: true
+---
+
+Follow /AGENTS.md and /PRODUCT.md for all design and architecture decisions.
+This is an underwriting workspace, not a chat app. The persistent object is Deal Readiness.
+Every interaction should reduce uncertainty; every animation should communicate increasing confidence.

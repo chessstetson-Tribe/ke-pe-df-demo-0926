@@ -1,0 +1,132 @@
+import type { DealRecord } from "./types";
+
+// Real, K&E-confirmed deal — one of 15 credit agreements provided for the Covenant
+// Extraction Spike, and one of only two documents run live at the July 14 onsite
+// (anchor for the Post-Close Deep Dive walkthrough). Entity detail and grid facts
+// below are drawn from KE-Debt-Finance-Demo-Moments.md v3.1 and its resource
+// compendium — use exactly, this is what makes the demo credible to a skeptical
+// technical audience.
+export const kinderCare: DealRecord = {
+  id: "kindercare",
+  name: "KinderCare — Amendment No. 3 to Credit Agreement",
+  sponsor: { value: "Public company (NYSE: KLC) since its 2024 IPO; no controlling financial sponsor", sensitivity: "sponsor-identity" },
+  industry: "Childcare / early-education services",
+  dealSizeUsd: { value: 240_000_000, sensitivity: "deal-economics" },
+  covenantFlavor: "Springing maintenance covenant, tested only above a revolver-usage threshold",
+  entity: {
+    borrower: "KUEHG Corp.",
+    holdings: "KinderCare Learning Companies, Inc.",
+    intermediateHoldings: "KC Sub, LLC",
+    adminAgent: "Barclays",
+    lenderGroup: ["Deutsche Bank", "UBS", "Bank of America", "Jefferies", "KKR", "Citizens"],
+  },
+  document: { name: "Amendment No. 3 to Credit Agreement", date: "2024-10-10", type: "credit-agreement-amendment" },
+  credibilityNote:
+    "A Tribe engineer (Carl) already built a standalone KinderCare term-grid prototype ahead of the July 14 onsite as a “break-glass credibility proof.” This grid-population step was already proven on this exact deal, not simulated.",
+  gridTerms: [
+    {
+      id: "kindercare-facility-amount",
+      dealId: "kindercare",
+      label: "Revolving Facility Amount",
+      value: "$240,000,000 (upsized from $160,000,000 by Amendment No. 3)",
+      citation: { doc: "Amendment No. 3 to Credit Agreement", clause: "§2.01(a)" },
+      grounding: "grounded_in_source",
+      review: "confirmed",
+      firmDefinition: "defined",
+    },
+    {
+      id: "kindercare-maturity-date",
+      dealId: "kindercare",
+      label: "Maturity Date",
+      value: "March 1, 2028 (revolver)",
+      citation: { doc: "Amendment No. 3 to Credit Agreement", clause: "§1.01, def. “Maturity Date”" },
+      grounding: "grounded_in_source",
+      review: "confirmed",
+      firmDefinition: "defined",
+    },
+    {
+      id: "kindercare-springing-maturity",
+      dealId: "kindercare",
+      label: "Springing Maturity Trigger",
+      value: "Springs 91 days prior to the maturity of the company's unsecured notes if more than $50,000,000 remains outstanding and unrefinanced",
+      citation: { doc: "Amendment No. 3 to Credit Agreement", clause: "§1.01, def. “Springing Maturity Date”" },
+      grounding: "grounded_in_source",
+      review: "confirmed",
+      firmDefinition: "defined",
+    },
+    {
+      id: "kindercare-admin-agent",
+      dealId: "kindercare",
+      label: "Administrative Agent",
+      value: "Barclays Bank PLC",
+      citation: { doc: "Amendment No. 3 to Credit Agreement", clause: "Preamble" },
+      grounding: "grounded_in_source",
+      review: "confirmed",
+      firmDefinition: "defined",
+    },
+    {
+      id: "kindercare-lender-group",
+      dealId: "kindercare",
+      label: "Lender Group",
+      value: "Deutsche Bank, UBS, Bank of America, Jefferies, KKR, Citizens",
+      citation: { doc: "Amendment No. 3 to Credit Agreement", clause: "Schedule 2.01 (Commitments)" },
+      grounding: "grounded_in_source",
+      review: "confirmed",
+      firmDefinition: "defined",
+    },
+    {
+      id: "kindercare-leverage-covenant",
+      dealId: "kindercare",
+      label: "Financial Covenant — Net Leverage Ratio",
+      value: "Springing maintenance covenant: max 6.75x net first-lien leverage, tested only when revolver usage exceeds 35% of commitments",
+      citation: { doc: "Amendment No. 3 to Credit Agreement", clause: "§7.11(a)" },
+      grounding: "grounded_in_source",
+      review: "unreviewed",
+      firmDefinition: "defined",
+    },
+    {
+      id: "kindercare-change-of-control",
+      dealId: "kindercare",
+      label: "Change of Control Definition",
+      value: "Ceasing to hold at least 35% of voting power, subject to standard carve-outs",
+      citation: { doc: "Amendment No. 3 to Credit Agreement", clause: "§1.01, def. “Change of Control”" },
+      grounding: "inferred",
+      review: "unreviewed",
+      firmDefinition: "defined",
+    },
+    {
+      id: "kindercare-auto-cure",
+      dealId: "kindercare",
+      label: "Auto Cure (Financial Covenant)",
+      value: null,
+      citation: null,
+      grounding: "not_extracted",
+      review: "unreviewed",
+      firmDefinition: "undefined_by_firm",
+      firmDefinitionNote:
+        "K&E has never defined a firm-wide pass/fail standard for what qualifies as a valid equity cure mechanic — one of six terms that failed to grade across all 15 Covenant Extraction Spike deals, KinderCare included.",
+    },
+    {
+      id: "kindercare-collateral-pledge-voting-limits",
+      dealId: "kindercare",
+      label: "Collateral / Pledge Voting Limits",
+      value: null,
+      citation: null,
+      grounding: "not_extracted",
+      review: "unreviewed",
+      firmDefinition: "undefined_by_firm",
+      firmDefinitionNote:
+        "K&E has never defined a firm-wide standard for an acceptable voting-stock pledge limitation — one of six terms that failed to grade across all 15 Covenant Extraction Spike deals, KinderCare included.",
+    },
+    {
+      id: "kindercare-events-of-default",
+      dealId: "kindercare",
+      label: "Events of Default",
+      value: "Standard EOD package: payment default, covenant breach (subject to cure), cross-default ≥ $25,000,000, bankruptcy, judgment default ≥ $35,000,000, ERISA, change of control",
+      citation: { doc: "Amendment No. 3 to Credit Agreement", clause: "§8.01(a)–(k)" },
+      grounding: "grounded_in_source",
+      review: "confirmed",
+      firmDefinition: "defined",
+    },
+  ],
+};
