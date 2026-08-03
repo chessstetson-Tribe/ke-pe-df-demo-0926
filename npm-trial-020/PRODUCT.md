@@ -53,7 +53,9 @@ Built so far (**Phase 1**): Login → Persona Select → Dashboard → **A0** (o
 
 Anchored on **KinderCare** (Amendment No. 3 to Credit Agreement) — one of 15 real credit agreements from K&E's own Covenant Extraction Spike, chosen because it's real, richly documented, and because a standalone grid-population prototype was already proven on this exact deal before the July 14 onsite. The anchor is swappable config (`ANCHOR_DEAL_ID` in `data/deals/index.ts`), not hardcoded — Medline is the strongest alternate.
 
-**Placeholder for now** (Phase 2/3): A1 (fallback NL document search), C1 (term sheet ↔ credit agreement diff triage), E2 (cross-practice M&A event routing), the two closing-moment variants F1 (correction-as-teaching-artifact — partially built: corrections already record reasoning in `state.corrections`, no retrieval-by-similarity screen yet) and F3 (fee-letter scope boundary — fully built, since it only needed the already-built `ScopeBoundaryNotice`).
+**Also built (Phase 2):** **A1** (fallback NL document search — the Kirkland/Goldman engagement-letter example, pre-open deal-team/date metadata), **C1** (SunGard term sheet ↔ credit agreement diff, triaged into business issues vs. legal comments with a raw→attorney-relevant→client-shown funnel — Partner's view is filtered, not redacted-in-place, reusing the same `fieldSensitivity` mechanism from Phase 1), **E2** (a mock M&A event feed tied to KinderCare's obligor structure, routed live into the associate's Next-Actions panel on demand).
+
+**Placeholder for now** (Phase 3): the two closing-moment variants — F1 (correction-as-teaching-artifact — partially built: corrections already record reasoning in `state.corrections`, no retrieval-by-similarity screen yet) and F3 (fee-letter scope boundary — fully built, since it only needed the already-built `ScopeBoundaryNotice`). Full persona-based field redaction beyond C1/Dashboard's current coverage.
 
 ---
 
@@ -68,9 +70,8 @@ A deny-list lookup, not a permissions engine (`data/fieldSensitivity.ts`): spons
 | Capability | Status | Notes |
 |---|---|---|
 | Constrained chat | **Real** | Calls the Anthropic API directly with a system prompt built live from the active deal's grid state — every citable fact is a real `GridTerm`. |
-| Precedent matching, grid population, undefined-term detection | **Scripted, swap-ready** | Deterministic functions in `src/detectors/`, each with the exact async signature a live LLM call would need. Swapping later means editing only that one file — see `AGENTS.md` §"The detector seam." |
+| Precedent matching, grid population, undefined-term detection, document search, term sheet diff, M&A event feed | **Scripted, swap-ready** | Deterministic functions in `src/detectors/`, each with the exact async signature a live LLM call would need. Swapping later means editing only that one file — see `AGENTS.md` §"The detector seam." |
 | Spine status/percentage, Next-Actions routing, redaction | **Real (client-side)** | Genuine derived state, no mock behind it. |
-| C1 diff, E2 cross-practice feed | **Typed, not implemented** | `DiffFlag` / `CrossPracticeEvent` shapes exist in `state/types.ts`; detector bodies return `[]`. |
 
 ---
 

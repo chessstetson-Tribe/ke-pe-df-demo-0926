@@ -25,6 +25,7 @@ export function createInitialState(): DemoState {
     diffFlags: [],
     corrections: [],
     crossPracticeEvents: [],
+    pendingCrossPracticeEvents: [],
     dirty: {},
   };
 }

@@ -4,6 +4,9 @@ import { NEW_MATTER } from "@/data/precedentCorpus";
 import { matchPrecedents } from "@/detectors/matchPrecedents";
 import { populateGrid } from "@/detectors/populateGrid";
 import { detectUndefinedTerms } from "@/detectors/detectUndefinedTerms";
+import { diffTermSheet } from "@/detectors/diffTermSheet";
+import { watchCrossPracticeFeed } from "@/detectors/watchCrossPracticeFeed";
+import { SUNGARD_DEAL_ID } from "@/data/sunGardDiff";
 import type { DemoAction } from "./reducer";
 import type { DemoState, GridTerm, NextActionItem, ScreenId } from "./types";
 
@@ -39,6 +42,12 @@ export async function seedScreen(
       seedB2Focus(terms, dispatch);
       return;
     }
+    case "c1":
+      await ensureDiffFlags(state, dispatch);
+      return;
+    case "e2":
+      await ensurePendingCrossPracticeEvents(state, dispatch);
+      return;
     default:
       return;
   }
@@ -48,6 +57,17 @@ async function ensureCandidates(state: DemoState, dispatch: Dispatch<DemoAction>
   if (state.precedentCandidates.length > 0) return;
   const candidates = await matchPrecedents(NEW_MATTER);
   dispatch({ type: "SET_PRECEDENT_CANDIDATES", candidates });
+}
+
+// Shared by any moment that needs "the deal actually being worked" rather than the
+// still-unmatched new matter — resolves to the anchor deal and dispatches
+// SELECT_PRECEDENT if nothing has been chosen yet, so a cold direct-jump into any of
+// these moments behaves identically to arriving there after A0/A2.
+function resolveActiveDealId(state: DemoState, dispatch: Dispatch<DemoAction>): string {
+  if (state.selectedPrecedentId) return state.selectedPrecedentId;
+  const precedentId = anchorDeal().id;
+  dispatch({ type: "SELECT_PRECEDENT", precedentId });
+  return precedentId;
 }
 
 async function seedA0(state: DemoState, dispatch: Dispatch<DemoAction>): Promise<void> {
@@ -68,14 +88,28 @@ async function seedA0(state: DemoState, dispatch: Dispatch<DemoAction>): Promise
 
 async function ensureGrid(state: DemoState, dispatch: Dispatch<DemoAction>): Promise<GridTerm[]> {
   if (state.grid.length > 0) return state.grid;
-  const precedentId = state.selectedPrecedentId ?? anchorDeal().id;
-  if (!state.selectedPrecedentId) {
-    dispatch({ type: "SELECT_PRECEDENT", precedentId });
-  }
+  const precedentId = resolveActiveDealId(state, dispatch);
   const populated = await populateGrid({ precedentDealId: precedentId });
   const withUndefinedFlags = await detectUndefinedTerms(populated);
   dispatch({ type: "SET_GRID", terms: withUndefinedFlags });
   return withUndefinedFlags;
+}
+
+async function ensureDiffFlags(state: DemoState, dispatch: Dispatch<DemoAction>): Promise<void> {
+  if (state.diffFlags.length > 0) return;
+  const flags = await diffTermSheet({
+    dealId: SUNGARD_DEAL_ID,
+    termSheetDocId: "sungard-term-sheet",
+    creditAgreementDocId: "sungard-credit-agreement",
+  });
+  dispatch({ type: "SET_DIFF_FLAGS", flags });
+}
+
+async function ensurePendingCrossPracticeEvents(state: DemoState, dispatch: Dispatch<DemoAction>): Promise<void> {
+  if (state.pendingCrossPracticeEvents.length > 0 || state.crossPracticeEvents.length > 0) return;
+  const dealId = resolveActiveDealId(state, dispatch);
+  const events = await watchCrossPracticeFeed(dealId);
+  dispatch({ type: "SET_PENDING_CROSS_PRACTICE_EVENTS", events });
 }
 
 function seedB2Focus(terms: GridTerm[], dispatch: Dispatch<DemoAction>): void {

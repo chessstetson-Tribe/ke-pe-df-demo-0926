@@ -1,7 +1,9 @@
 import type {
   ActingPersona,
   CorrectionRecord,
+  CrossPracticeEvent,
   DemoState,
+  DiffFlag,
   GridTerm,
   NextActionItem,
   PrecedentCandidate,
@@ -23,7 +25,10 @@ export type DemoAction =
   | { type: "CORRECT_GRID_TERM"; termId: string; value: string; reasoning: string }
   | { type: "ADD_NEXT_ACTION"; item: NextActionItem }
   | { type: "RESOLVE_NEXT_ACTION"; id: string }
-  | { type: "SET_SPINE_STAGE"; stage: SpineStageId; status: SpineStageStatus };
+  | { type: "SET_SPINE_STAGE"; stage: SpineStageId; status: SpineStageStatus }
+  | { type: "SET_DIFF_FLAGS"; flags: DiffFlag[] }
+  | { type: "SET_PENDING_CROSS_PRACTICE_EVENTS"; events: CrossPracticeEvent[] }
+  | { type: "TRIGGER_CROSS_PRACTICE_EVENT"; event: CrossPracticeEvent; nextAction: NextActionItem };
 
 export function demoReducer(state: DemoState, action: DemoAction): DemoState {
   switch (action.type) {
@@ -102,6 +107,21 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
 
     case "SET_SPINE_STAGE":
       return { ...state, spine: { ...state.spine, [action.stage]: action.status } };
+
+    case "SET_DIFF_FLAGS":
+      return { ...state, diffFlags: action.flags, dirty: { ...state.dirty, c1: true } };
+
+    case "SET_PENDING_CROSS_PRACTICE_EVENTS":
+      return { ...state, pendingCrossPracticeEvents: action.events, dirty: { ...state.dirty, e2: true } };
+
+    case "TRIGGER_CROSS_PRACTICE_EVENT":
+      if (state.crossPracticeEvents.some((e) => e.id === action.event.id)) return state;
+      return {
+        ...state,
+        crossPracticeEvents: [...state.crossPracticeEvents, action.event],
+        pendingCrossPracticeEvents: state.pendingCrossPracticeEvents.filter((e) => e.id !== action.event.id),
+        nextActions: [...state.nextActions, action.nextAction],
+      };
 
     default:
       return state;

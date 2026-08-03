@@ -130,5 +130,6 @@ export interface DemoState {
   diffFlags: DiffFlag[];
   corrections: CorrectionRecord[];
   crossPracticeEvents: CrossPracticeEvent[];
+  pendingCrossPracticeEvents: CrossPracticeEvent[];
   dirty: Partial<Record<ScreenId, boolean>>;
 }

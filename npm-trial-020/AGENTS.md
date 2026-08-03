@@ -38,7 +38,7 @@ If a change makes a screen need its own copy of the spine bar, its own Next-Acti
 ```
 src/
   state/
-    types.ts            # ALL cross-cutting types, including Phase 2/3 shapes (DiffFlag, CrossPracticeEvent) — typed now, populated later
+    types.ts            # ALL cross-cutting types, including Phase 3 shapes (CorrectionRecord retrieval) — typed now, populated later
     initialState.ts      # pristine DemoState
     reducer.ts            # DemoAction union + demoReducer — pure, synchronous, no async
     momentSeeds.ts        # seedScreen(screen, state, dispatch) — the ONLY caller of detectors/
@@ -47,12 +47,12 @@ src/
 
   detectors/              # the scripted-now/live-later swap seam — see below
     matchPrecedents.ts  populateGrid.ts  detectUndefinedTerms.ts
-    diffTermSheet.ts  watchCrossPracticeFeed.ts   # Phase 2 stubs, typed, return []
+    diffTermSheet.ts  watchCrossPracticeFeed.ts  searchDocuments.ts
 
   data/
     deals/                # kinderCare.ts, medline.ts, index.ts (ANCHOR_DEAL_ID)
     precedentCorpus.ts     # 15-deal pool + the fictional new matter (Meadowbrook)
-    personas.ts  fieldSensitivity.ts  maEventFeed.ts
+    personas.ts  fieldSensitivity.ts  maEventFeed.ts  sunGardDiff.ts  documentCorpus.ts
 
   chat/                   # the REAL model call, separate from detectors/
     chatApi.ts  systemPrompt.ts  ChatContext.tsx  ChatDock.tsx  MessageBubble.tsx  Composer.tsx
@@ -71,9 +71,9 @@ src/
     LoginScreen.tsx  PersonaSelectScreen.tsx  DashboardScreen.tsx
     A0OpenMatterScreen.tsx  A2ConfirmPrecedentScreen.tsx
     B1GridScreen.tsx  B2UndefinedTermScreen.tsx
-    A1SearchScreen.tsx  C1DiffScreen.tsx  E2CrossPracticeScreen.tsx   # placeholders
+    A1SearchScreen.tsx  C1DiffScreen.tsx  E2CrossPracticeScreen.tsx
     ClosingF1Screen.tsx  ClosingF3Screen.tsx                          # F3 real, F1 placeholder
-    PlaceholderScreen.tsx  ScreenRouter.tsx
+    PlaceholderScreen.tsx  ScreenRouter.tsx                            # PlaceholderScreen only backs F1 now
 
   App.tsx                  # thin: DemoStateProvider > ChatProvider > AppShell
 ```
