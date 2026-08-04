@@ -1,10 +1,11 @@
 # K&E Debt Finance Demo — Presenter Script
 
-**Version 1.0 — 2026-08-04**
+**Version 1.1 — 2026-08-04**
 
 *A tip-to-tail run-of-show for the built app (`npm-trial-020` / "DF Docket"), sequenced per `src/state/momentSequence.ts`. This is a script to read from and rehearse, not a new spec — it doesn't introduce any moment, screen, or capability the app doesn't already have. Where it makes a claim, it points back to `PRODUCT.md`, the Build Brief, the Moments doc, or the POV compendium so nothing said in the room outruns what's actually built or sourced.*
 
 **Changelog:**
+- v1.1 — 2026-08-04 — Corrected the A0/A1 framing: the ~10-second precedent search is uniform whether a document was pre-loaded (A0) or typed as a description (A1) — the speed comes from the precedent corpus being thoroughly indexed, not from a document happening to already be in the data room. Previously implied A0 was the fast path and A1 a slower fallback; both are the same index, different triggers.
 - v1.0 — 2026-08-04 — Initial script, written against the app as of `172cfee` (A2a flexible search + feedback loop UI) and the POV compendium added in `dcff51f`.
 
 ---
@@ -13,7 +14,7 @@
 
 Everything below is one continuous demo, but it's carrying two claims at once. Name both out loud in the cold open, then keep tagging which one each moment is proving — a room that can't tell the two apart will walk out remembering "AI extracted some text," not the actual pitch.
 
-**Thread 1 — Precedent matching.** The Precedent Bank already knows this deal's characteristics and the firm's whole prior corpus, so a new matter opens to a ranked shortlist, not a blank search box. This is what turns "3 hours" into "10 seconds."
+**Thread 1 — Precedent matching.** The Precedent Bank already knows this deal's characteristics and the firm's whole prior corpus, so a new matter opens to a ranked shortlist, not a blank search box. This is what turns "3 hours" into "10 seconds" — and that ten seconds holds whether or not a document was already sitting in the data room. The speed doesn't come from having a term sheet pre-loaded; it comes from the precedent corpus itself being thoroughly indexed. A pre-loaded document (A0) and a typed description of one that isn't there yet (A1) are two different *triggers* into the same index, not a fast path and a slow path — say this explicitly, because it's the actual main thing, not a footnote.
 
 **Thread 2 — The learning loop.** Every thumbs-up/down, every grid correction, every undefined-term flag is a data point the system keeps — not just for this deal, but for the next associate, on a different deal, next quarter. The software and the data scaffold underneath it (and DealOS, which will eventually run this the same way it runs M&A) get better at the job on behalf of the *whole firm*, not just whoever's sitting at the keyboard today.
 
@@ -23,8 +24,8 @@ Say the second thread in Clinger's own words if the room is technical — it's K
 
 | Moment | Precedent matching | Learning loop | One-line why |
 |---|---|---|---|
-| A0 | ●●● | ● | Zero-query synthesis; thumbs feed the shared detector |
-| A1 | ●●● | — | Speed contrast; deliberately the fallback, not the loop |
+| A0 | ●●● | ● | Zero-query synthesis off a pre-loaded doc — same 10-second index as A1, not a faster path |
+| A1 | ●●● | — | Same 10-second index, triggered by a typed description instead — the fallback *trigger*, not a slower one |
 | A2a | ●●● | ● | Same detector as A0, three entry points, still feeding one ledger |
 | A2 | ●●● | ● | Investigate/confirm a candidate; feedback on the *reasoning*, not just the pick |
 | B1 | ● | ●●● | Correction reasoning captured, not just a corrected value — this is the loop's fuel |
@@ -84,7 +85,7 @@ Don't let the two threads collapse into one talking point. Precedent matching is
 ### 4.2 Moment A0 — Open the deal, the blocker is already waiting — ~2.5 min
 
 **Say (on load, before touching anything):**
-"Zero query typed, and the system already told me two things: what's blocking this deal right now — no precedent selected, grid not started — and a ranked shortlist of candidate precedents it matched against this deal's own characteristics. That's the whole point of Thread 1: the associate's job here isn't to search, it's to *choose*."
+"Zero query typed, and the system already told me two things: what's blocking this deal right now — no precedent selected, grid not started — and a ranked shortlist of candidate precedents it matched against this deal's own characteristics. That's the whole point of Thread 1: the associate's job here isn't to search, it's to *choose*. And I want to be precise about why this is instant: it's not instant because a term sheet happened to already be sitting in this deal's data room. It's instant because the precedent corpus itself — every deal behind this bank — is thoroughly indexed. That's the big thing. If nothing had been pre-loaded here, describing this same deal out loud would land the same ranked match in the same ten seconds — that's coming up next, in A1."
 
 **Click:** **Why this match** on the top candidate to expand the reasoning bullets.
 
@@ -112,7 +113,7 @@ Jump back or forward to A1 explicitly via the presenter dock — it's not adjace
 **Click:** the pre-filled or typed description → **Search**.
 
 **Say (as result returns):**
-"Deal team and date, attached, before I even open the file — I can confirm relevance without opening it. That's ten seconds, and this is the *fallback* path, deliberately — it's what happens when there's nothing for the system to have pre-matched. A0 is the default; this is what's left when A0 has nothing to work with."
+"Deal team and date, attached, before I even open the file — I can confirm relevance without opening it. Ten seconds — same ten seconds as A0. The only difference is what triggered the search: there, a document was already sitting in the data room; here, I just typed a description of one that wasn't. Same index underneath both. This is the fallback *trigger*, deliberately — it's what happens when there's nothing for the system to have pre-matched — but it's not a slower fallback. The corpus doesn't care how the question arrived."
 
 *Thread tag: pure Thread 1 — no feedback UI here, and that's honest, not an oversight: there's nothing to correct in a raw retrieval hit the way there is in a ranked match or an extracted term.*
 
@@ -276,6 +277,7 @@ A few claims the source material explicitly does *not* support. Saying them will
 - **Don't imply the client portal or compliance guide are in this build.** Both were explicitly demoted from base to Expansion scope post-onsite — this demo doesn't touch them, and shouldn't be described as if it does.
 - **Don't overstate E2 or the Cross-Practice Coordination feature as shipped.** Say "scoped, not built yet" — it's Expansion scope in the SOW, and the demo itself frames it as a capability being proven, not a shipped one.
 - **Don't claim real authentication.** Login is mocked on purpose; say so if asked, don't dodge it.
+- **Don't imply A0 is faster than A1 because a document happened to be pre-loaded.** Both resolve in ~10 seconds off the same indexed precedent corpus — the pre-loaded document changes what triggers the search, not how long it takes. The indexing itself is the main thing; don't let a room walk away thinking the speed is contingent on a document already being in the data room.
 
 ---
 
