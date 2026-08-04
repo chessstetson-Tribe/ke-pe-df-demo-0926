@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { AlertTriangle, ArrowRight, ChevronDown, ChevronUp } from "lucide-react";
+import { AlertTriangle, ArrowRight, ChevronDown, ChevronUp, X } from "lucide-react";
 import { useDemoDispatch, useDemoState, useNavigate } from "@/state/DemoStateContext";
 import { NEW_MATTER } from "@/data/precedentCorpus";
 import { FOCUS } from "@/components/shared/focus";
+import { FeedbackButtons } from "@/components/shared/FeedbackButtons";
+import { FeedbackReasonPicker } from "@/components/shared/FeedbackReasonPicker";
 
 // The true opening beat — zero query typed. The system has already matched whatever's
 // sitting in the data room (the term sheet) against the firm's whole precedent
@@ -12,10 +14,20 @@ export function A0OpenMatterScreen() {
   const dispatch = useDemoDispatch();
   const navigate = useNavigate();
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [pickerOpenFor, setPickerOpenFor] = useState<string | null>(null);
+  const [rejectedReasons, setRejectedReasons] = useState<Set<string>>(new Set());
 
   function investigate(precedentDealId: string) {
     dispatch({ type: "SELECT_PRECEDENT", precedentId: precedentDealId });
     navigate("a2");
+  }
+
+  function rejectReason(candidateId: string, reason: string) {
+    setRejectedReasons((prev) => new Set(prev).add(`${candidateId}::${reason}`));
+    dispatch({
+      type: "RECORD_FEEDBACK",
+      record: { id: `match-reason-${candidateId}-${reason}-${state.feedback.length}`, targetType: "match-reason", targetId: `${candidateId}::${reason}`, sentiment: "down", note: reason },
+    });
   }
 
   return (
@@ -38,8 +50,13 @@ export function A0OpenMatterScreen() {
         </div>
 
         <div className="mt-6">
-          <div className="mb-2 font-mono text-[10px] font-semibold uppercase tracking-wide text-[#9a9a9a]">
-            Ranked candidates
+          <div className="mb-2 flex items-baseline justify-between">
+            <div className="font-mono text-[10px] font-semibold uppercase tracking-wide text-[#9a9a9a]">
+              Ranked candidates
+            </div>
+            <button onClick={() => navigate("a2a")} className="text-xs font-medium text-[#2354e8] hover:underline">
+              Search the full precedent bank instead →
+            </button>
           </div>
           <div className="space-y-2">
             {state.precedentCandidates.map((c, i) => {
@@ -56,9 +73,33 @@ export function A0OpenMatterScreen() {
                         <div className="text-xs text-[#7a7a7a]">{c.summary}</div>
                       </div>
                     </div>
-                    <span className="flex-none rounded-[4px] bg-[#ecf4ff] px-2 py-0.5 text-xs font-bold text-[#2354e8]">
-                      {c.matchScore}% match
-                    </span>
+                    <div className="flex flex-none items-center gap-1.5">
+                      <span className="rounded-[4px] bg-[#ecf4ff] px-2 py-0.5 text-xs font-bold text-[#2354e8]">
+                        {c.matchScore}% match
+                      </span>
+                      <div className="relative">
+                        <FeedbackButtons
+                          onUp={() =>
+                            dispatch({
+                              type: "RECORD_FEEDBACK",
+                              record: { id: `candidate-${c.precedentDealId}-up-${state.feedback.length}`, targetType: "precedent-candidate", targetId: c.precedentDealId, sentiment: "up" },
+                            })
+                          }
+                          onDown={() => setPickerOpenFor(c.precedentDealId)}
+                        />
+                        <FeedbackReasonPicker
+                          open={pickerOpenFor === c.precedentDealId}
+                          onClose={() => setPickerOpenFor(null)}
+                          onSubmit={(reason) => {
+                            dispatch({
+                              type: "RECORD_FEEDBACK",
+                              record: { id: `candidate-${c.precedentDealId}-down-${state.feedback.length}`, targetType: "precedent-candidate", targetId: c.precedentDealId, sentiment: "down", note: reason },
+                            });
+                            setPickerOpenFor(null);
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
                   <div className="mt-3 flex items-center gap-2">
                     <button
@@ -77,10 +118,27 @@ export function A0OpenMatterScreen() {
                     </button>
                   </div>
                   {expanded && (
-                    <ul className="mt-3 list-disc space-y-1 pl-5 text-xs leading-relaxed text-[#7a7a7a]">
-                      {c.matchedOn.map((reason) => (
-                        <li key={reason}>{reason}</li>
-                      ))}
+                    <ul className="mt-3 space-y-1 text-xs leading-relaxed text-[#7a7a7a]">
+                      {c.matchedOn.map((reason) => {
+                        const rejected = rejectedReasons.has(`${c.precedentDealId}::${reason}`);
+                        return (
+                          <li key={reason} className="flex items-center gap-1.5">
+                            <span className={rejected ? "text-[#bbbbbb] line-through" : ""}>• {reason}</span>
+                            {rejected ? (
+                              <span className="text-[10px] font-medium text-[#9a9a9a]">noted — de-emphasizing this</span>
+                            ) : (
+                              <button
+                                type="button"
+                                title="Not relevant"
+                                onClick={() => rejectReason(c.precedentDealId, reason)}
+                                className="rounded-[4px] p-0.5 text-[#d9d9d9] hover:bg-[#f5f6f9] hover:text-[#c0392b]"
+                              >
+                                <X className="h-3 w-3" />
+                              </button>
+                            )}
+                          </li>
+                        );
+                      })}
                     </ul>
                   )}
                 </div>

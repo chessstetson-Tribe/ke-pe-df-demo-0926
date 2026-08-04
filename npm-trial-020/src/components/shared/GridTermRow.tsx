@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { AlertTriangle } from "lucide-react";
 import { RedactedField } from "@/components/chrome/RedactedField";
+import { FeedbackButtons } from "@/components/shared/FeedbackButtons";
 import type { GridTerm } from "@/state/types";
 
 // Deliberately does NOT reuse <Row/> — the brief requires two independent per-term
@@ -92,24 +93,11 @@ export function GridTermRow({
 
       {!isUndefined && term.review === "unreviewed" && (onConfirm || onCorrect) && (
         <div className="mt-2 flex items-center gap-2">
-          {onConfirm && (
-            <button
-              type="button"
-              onClick={() => onConfirm(term.id)}
-              className="rounded-[6px] bg-[#2354e8] px-2.5 py-1 text-xs font-bold text-white hover:bg-[#1a45c0]"
-            >
-              Confirm
-            </button>
-          )}
-          {onCorrect && (
-            <button
-              type="button"
-              onClick={() => setCorrecting((v) => !v)}
-              className="rounded-[6px] border-2 border-[#d9d9d9] px-2.5 py-1 text-xs font-bold text-[#7a7a7a] hover:border-[#bbbbbb] hover:text-[#1c1e1a]"
-            >
-              Correct
-            </button>
-          )}
+          <span className="text-xs text-[#9a9a9a]">Is this extraction right?</span>
+          <FeedbackButtons
+            onUp={() => onConfirm?.(term.id)}
+            onDown={() => setCorrecting((v) => !v)}
+          />
         </div>
       )}
 

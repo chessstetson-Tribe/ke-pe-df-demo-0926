@@ -8,6 +8,7 @@ export type ScreenId =
   | "dashboard"
   | "a0"
   | "a1"
+  | "a2a"
   | "a2"
   | "b1"
   | "b2"
@@ -116,6 +117,21 @@ export interface CrossPracticeEvent {
   createdNextActionId: string | null;
 }
 
+// The generic "learning loop" ledger — a deliberately thin catch-all for surfaces
+// that don't already have a structured feedback shape of their own. Grid-term
+// corrections, by contrast, are NOT logged here — CorrectionRecord already is that
+// structured record for B1, so thumbs on a grid row drive the existing confirm/
+// correct actions directly rather than duplicating into this ledger.
+export type FeedbackTargetType = "precedent-candidate" | "match-reason" | "chat-message";
+
+export interface FeedbackRecord {
+  id: string;
+  targetType: FeedbackTargetType;
+  targetId: string;
+  sentiment: "up" | "down";
+  note?: string;
+}
+
 export interface DemoState {
   screen: ScreenId;
   authenticated: boolean;
@@ -132,5 +148,6 @@ export interface DemoState {
   corrections: CorrectionRecord[];
   crossPracticeEvents: CrossPracticeEvent[];
   pendingCrossPracticeEvents: CrossPracticeEvent[];
+  feedback: FeedbackRecord[];
   dirty: Partial<Record<ScreenId, boolean>>;
 }

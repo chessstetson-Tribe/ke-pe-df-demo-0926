@@ -27,6 +27,7 @@ export function createInitialState(): DemoState {
     corrections: [...PRIOR_CORRECTIONS],
     crossPracticeEvents: [],
     pendingCrossPracticeEvents: [],
+    feedback: [],
     dirty: {},
   };
 }

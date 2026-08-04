@@ -1,9 +1,12 @@
-import { ArrowRight, Sparkles } from "lucide-react";
+import { useState } from "react";
+import { ArrowRight, Sparkles, X } from "lucide-react";
 import { useDemoDispatch, useDemoState, useNavigate } from "@/state/DemoStateContext";
 import { DEALS } from "@/data/deals";
 import { PRECEDENT_CORPUS } from "@/data/precedentCorpus";
 import { RedactedField } from "@/components/chrome/RedactedField";
 import { FOCUS } from "@/components/shared/focus";
+import { FeedbackButtons } from "@/components/shared/FeedbackButtons";
+import { FeedbackReasonPicker } from "@/components/shared/FeedbackReasonPicker";
 
 // Continues directly from A0: investigating a candidate the system already surfaced,
 // never a search from scratch. Manual refinement narrows the existing shortlist — it
@@ -12,6 +15,8 @@ export function A2ConfirmPrecedentScreen() {
   const state = useDemoState();
   const dispatch = useDemoDispatch();
   const navigate = useNavigate();
+  const [rejectedReasons, setRejectedReasons] = useState<Set<string>>(new Set());
+  const [pickerOpenFor, setPickerOpenFor] = useState<string | null>(null);
 
   const underReviewId = state.selectedPrecedentId ?? state.precedentCandidates[0]?.precedentDealId;
   const candidate = state.precedentCandidates.find((c) => c.precedentDealId === underReviewId);
@@ -53,11 +58,58 @@ export function A2ConfirmPrecedentScreen() {
         <h1 className="mt-1 text-xl font-semibold tracking-tight text-[#1c1e1a]">{candidate.dealName}</h1>
 
         <div className="mt-4 rounded-xl border border-[rgba(0,0,0,0.08)] bg-white p-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
-          <div className="text-sm font-bold text-[#1c1e1a]">Why this was suggested</div>
-          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm leading-relaxed text-[#7a7a7a]">
-            {candidate.matchedOn.map((reason) => (
-              <li key={reason}>{reason}</li>
-            ))}
+          <div className="flex items-center justify-between">
+            <div className="text-sm font-bold text-[#1c1e1a]">Why this was suggested</div>
+            <div className="relative">
+              <FeedbackButtons
+                onUp={() =>
+                  dispatch({
+                    type: "RECORD_FEEDBACK",
+                    record: { id: `candidate-${underReviewId}-up-${state.feedback.length}`, targetType: "precedent-candidate", targetId: underReviewId, sentiment: "up" },
+                  })
+                }
+                onDown={() => setPickerOpenFor(underReviewId)}
+              />
+              <FeedbackReasonPicker
+                open={pickerOpenFor === underReviewId}
+                onClose={() => setPickerOpenFor(null)}
+                onSubmit={(reason) => {
+                  dispatch({
+                    type: "RECORD_FEEDBACK",
+                    record: { id: `candidate-${underReviewId}-down-${state.feedback.length}`, targetType: "precedent-candidate", targetId: underReviewId, sentiment: "down", note: reason },
+                  });
+                  setPickerOpenFor(null);
+                }}
+              />
+            </div>
+          </div>
+          <ul className="mt-2 space-y-1 text-sm leading-relaxed text-[#7a7a7a]">
+            {candidate.matchedOn.map((reason) => {
+              const rejected = rejectedReasons.has(reason);
+              return (
+                <li key={reason} className="flex items-center gap-1.5">
+                  <span className={rejected ? "text-[#bbbbbb] line-through" : ""}>• {reason}</span>
+                  {rejected ? (
+                    <span className="text-xs font-medium text-[#9a9a9a]">noted — de-emphasizing this</span>
+                  ) : (
+                    <button
+                      type="button"
+                      title="Not relevant"
+                      onClick={() => {
+                        setRejectedReasons((prev) => new Set(prev).add(reason));
+                        dispatch({
+                          type: "RECORD_FEEDBACK",
+                          record: { id: `match-reason-${underReviewId}-${reason}-${state.feedback.length}`, targetType: "match-reason", targetId: `${underReviewId}::${reason}`, sentiment: "down", note: reason },
+                        });
+                      }}
+                      className="rounded-[4px] p-0.5 text-[#d9d9d9] hover:bg-[#f5f6f9] hover:text-[#c0392b]"
+                    >
+                      <X className="h-3.5 w-3.5" />
+                    </button>
+                  )}
+                </li>
+              );
+            })}
           </ul>
 
           {deal?.entity && (
@@ -93,8 +145,13 @@ export function A2ConfirmPrecedentScreen() {
         </div>
 
         <div className="mt-6">
-          <div className="mb-2 font-mono text-[10px] font-semibold uppercase tracking-wide text-[#9a9a9a]">
-            Narrow the shortlist
+          <div className="mb-2 flex items-baseline justify-between">
+            <div className="font-mono text-[10px] font-semibold uppercase tracking-wide text-[#9a9a9a]">
+              Narrow the shortlist
+            </div>
+            <button onClick={() => navigate("a2a")} className="text-xs font-medium text-[#2354e8] hover:underline">
+              Open flexible search (sponsor, size, lender, natural language) →
+            </button>
           </div>
           <div className="flex items-center gap-2">
             <select
@@ -147,12 +204,36 @@ export function A2ConfirmPrecedentScreen() {
                     <div className="text-sm font-medium text-[#1c1e1a]">{c.dealName}</div>
                     <div className="text-xs text-[#9a9a9a]">{c.industry} · {c.matchScore}% match</div>
                   </div>
-                  <button
-                    onClick={() => dispatch({ type: "SELECT_PRECEDENT", precedentId: c.precedentDealId })}
-                    className="rounded-[6px] border-2 border-[#d9d9d9] px-2.5 py-1 text-xs font-bold text-[#7a7a7a] hover:border-[#bbbbbb] hover:text-[#1c1e1a]"
-                  >
-                    Investigate instead
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <div className="relative">
+                      <FeedbackButtons
+                        onUp={() =>
+                          dispatch({
+                            type: "RECORD_FEEDBACK",
+                            record: { id: `candidate-${c.precedentDealId}-up-${state.feedback.length}`, targetType: "precedent-candidate", targetId: c.precedentDealId, sentiment: "up" },
+                          })
+                        }
+                        onDown={() => setPickerOpenFor(c.precedentDealId)}
+                      />
+                      <FeedbackReasonPicker
+                        open={pickerOpenFor === c.precedentDealId}
+                        onClose={() => setPickerOpenFor(null)}
+                        onSubmit={(reason) => {
+                          dispatch({
+                            type: "RECORD_FEEDBACK",
+                            record: { id: `candidate-${c.precedentDealId}-down-${state.feedback.length}`, targetType: "precedent-candidate", targetId: c.precedentDealId, sentiment: "down", note: reason },
+                          });
+                          setPickerOpenFor(null);
+                        }}
+                      />
+                    </div>
+                    <button
+                      onClick={() => dispatch({ type: "SELECT_PRECEDENT", precedentId: c.precedentDealId })}
+                      className="rounded-[6px] border-2 border-[#d9d9d9] px-2.5 py-1 text-xs font-bold text-[#7a7a7a] hover:border-[#bbbbbb] hover:text-[#1c1e1a]"
+                    >
+                      Investigate instead
+                    </button>
+                  </div>
                 </div>
               ))
             )}

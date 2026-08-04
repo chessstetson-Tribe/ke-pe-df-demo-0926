@@ -9,6 +9,7 @@ import { GlobalHeader } from "./GlobalHeader";
 import { SpineBar } from "./SpineBar";
 import { NextActionsPanel } from "./NextActionsPanel";
 import { PresenterDock } from "./PresenterDock";
+import { DemoFlag } from "./DemoFlag";
 
 const TEXT_INPUT_TAGS = new Set(["INPUT", "TEXTAREA", "SELECT"]);
 
@@ -37,22 +38,28 @@ export function AppShell() {
   // Gate on screen id, not `authenticated` — LOGIN sets both authenticated=true and
   // screen="persona-select" in the same dispatch, so checking `authenticated` alone
   // would skip persona-select straight to chrome before a persona is ever chosen.
-  if (state.screen === "login" || state.screen === "persona-select") {
-    return state.screen === "login" ? <LoginScreen /> : <PersonaSelectScreen />;
-  }
+  const content =
+    state.screen === "login" || state.screen === "persona-select" ? (
+      state.screen === "login" ? <LoginScreen /> : <PersonaSelectScreen />
+    ) : (
+      <div className="flex h-screen flex-col overflow-hidden bg-white text-[#1c1e1a]" style={{ fontFamily: "var(--font-body)" }}>
+        <GlobalHeader />
+        <SpineBar />
+        <div className="flex min-h-0 flex-1">
+          <main className="flex min-w-0 flex-1 flex-col overflow-hidden">
+            <ScreenRouter />
+            <ChatDock />
+          </main>
+          <NextActionsPanel />
+        </div>
+        <PresenterDock />
+      </div>
+    );
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-white text-[#1c1e1a]" style={{ fontFamily: "var(--font-body)" }}>
-      <GlobalHeader />
-      <SpineBar />
-      <div className="flex min-h-0 flex-1">
-        <main className="flex min-w-0 flex-1 flex-col overflow-hidden">
-          <ScreenRouter />
-          <ChatDock />
-        </main>
-        <NextActionsPanel />
-      </div>
-      <PresenterDock />
-    </div>
+    <>
+      <DemoFlag />
+      {content}
+    </>
   );
 }

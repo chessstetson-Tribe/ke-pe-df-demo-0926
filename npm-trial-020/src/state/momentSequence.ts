@@ -3,12 +3,15 @@ import type { ScreenId } from "./types";
 // The full sequence per KE-Debt-Finance-Demo-Moments.md: A0 -> A1 -> A2 -> B1 -> B2 ->
 // C1 -> E2 -> (F1 or F3). Dashboard is prepended as the true start; both closing
 // variants are included so "next" can walk through either during rehearsal, looping
-// back to Dashboard after F3. Shared by the presenter dock's click-to-advance and the
-// keyboard shortcut — one canonical order, not two.
+// back to Dashboard after F3. A2a (flexible precedent search) sits between A1 and A2 —
+// it's the augmented on-ramp into A2's confirm step, not a detour off the spine.
+// Shared by the presenter dock's click-to-advance and the keyboard shortcut — one
+// canonical order, not two.
 export const MOMENT_SEQUENCE: ScreenId[] = [
   "dashboard",
   "a0",
   "a1",
+  "a2a",
   "a2",
   "b1",
   "b2",

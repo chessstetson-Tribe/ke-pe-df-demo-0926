@@ -2,6 +2,7 @@ import { useDemoState } from "@/state/DemoStateContext";
 import { DashboardScreen } from "./DashboardScreen";
 import { A0OpenMatterScreen } from "./A0OpenMatterScreen";
 import { A1SearchScreen } from "./A1SearchScreen";
+import { A2aSearchPrecedentsScreen } from "./A2aSearchPrecedentsScreen";
 import { A2ConfirmPrecedentScreen } from "./A2ConfirmPrecedentScreen";
 import { B1GridScreen } from "./B1GridScreen";
 import { B2UndefinedTermScreen } from "./B2UndefinedTermScreen";
@@ -20,6 +21,8 @@ export function ScreenRouter() {
       return <A0OpenMatterScreen />;
     case "a1":
       return <A1SearchScreen />;
+    case "a2a":
+      return <A2aSearchPrecedentsScreen />;
     case "a2":
       return <A2ConfirmPrecedentScreen />;
     case "b1":

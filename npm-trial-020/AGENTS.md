@@ -69,7 +69,7 @@ src/
 
   screens/                 # one file per moment; ScreenRouter is a plain switch
     LoginScreen.tsx  PersonaSelectScreen.tsx  DashboardScreen.tsx
-    A0OpenMatterScreen.tsx  A2ConfirmPrecedentScreen.tsx
+    A0OpenMatterScreen.tsx  A2aSearchPrecedentsScreen.tsx  A2ConfirmPrecedentScreen.tsx
     B1GridScreen.tsx  B2UndefinedTermScreen.tsx
     A1SearchScreen.tsx  C1DiffScreen.tsx  E2CrossPracticeScreen.tsx
     ClosingF1Screen.tsx  ClosingF3Screen.tsx
@@ -82,7 +82,7 @@ src/
 
 ## Navigation
 
-`state.screen: ScreenId` (11-member union, `state/types.ts`) drives everything. **Do not add `react-router`.** The requirement that a presenter can jump to any moment live, in any order, is better served by a plain switch (`ScreenRouter`) plus a jump control than by URL routing. That control (`PresenterDock`, `state/momentSequence.ts`) is deliberately *not* header chrome — it's a small unlabeled floating button (bottom-right): click advances to the next moment in `MOMENT_SEQUENCE`, press-and-hold opens the full jump list. The `ArrowRight` keyboard shortcut (wired in `AppShell`, suppressed when a text input has focus) calls the same `nextMomentFrom()` helper — one canonical sequence, two triggers.
+`state.screen: ScreenId` (12-member union, `state/types.ts`) drives everything. **Do not add `react-router`.** The requirement that a presenter can jump to any moment live, in any order, is better served by a plain switch (`ScreenRouter`) plus a jump control than by URL routing. That control (`PresenterDock`, `state/momentSequence.ts`) is deliberately *not* header chrome — it's a small unlabeled floating button (bottom-right): click advances to the next moment in `MOMENT_SEQUENCE`, press-and-hold opens the full jump list. The `ArrowRight` keyboard shortcut (wired in `AppShell`, suppressed when a text input has focus) calls the same `nextMomentFrom()` helper — one canonical sequence, two triggers.
 
 The one rule that matters: **navigating to a screen and seeding the state it assumes are the same call.** `useNavigate()` dispatches `NAVIGATE` and fires `momentSeeds.seedScreen()` in the same breath — a cold jump straight to B2 must seed a populated grid with the undefined term focused, identically to arriving there after playing A0→A2→B1. If you add a new moment that needs seed data, add its case to `momentSeeds.ts`, not to the screen component itself.
 

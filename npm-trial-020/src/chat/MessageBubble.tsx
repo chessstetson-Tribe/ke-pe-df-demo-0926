@@ -1,5 +1,8 @@
+import { useState } from "react";
 import { AlertTriangle } from "lucide-react";
 import { confColor, confFromText, renderCites } from "@/components/shared/Cite";
+import { FeedbackButtons } from "@/components/shared/FeedbackButtons";
+import { FeedbackNoteBox } from "@/components/shared/FeedbackNoteBox";
 import { useDemoDispatch, useDemoState } from "@/state/DemoStateContext";
 import type { NextActionItem } from "@/state/types";
 import type { ChatMessage } from "./ChatContext";
@@ -7,6 +10,8 @@ import type { ChatMessage } from "./ChatContext";
 export function MessageBubble({ message, index }: { message: ChatMessage; index: number }) {
   const dispatch = useDemoDispatch();
   const state = useDemoState();
+  const [noteOpen, setNoteOpen] = useState(false);
+  const targetId = `chat-message-${index}`;
 
   if (message.role === "user") {
     return (
@@ -65,7 +70,7 @@ export function MessageBubble({ message, index }: { message: ChatMessage; index:
         <div className="mt-2 pl-10 font-serif text-base leading-relaxed text-[#1c1e1a]">{renderCites(message.text)}</div>
       )}
 
-      <div className={`mt-2 ${isUnofficial ? "ml-10" : "pl-10"}`}>
+      <div className={`relative mt-2 flex items-center gap-2 ${isUnofficial ? "ml-10" : "pl-10"}`}>
         <button
           type="button"
           onClick={addToNextActions}
@@ -73,6 +78,19 @@ export function MessageBubble({ message, index }: { message: ChatMessage; index:
         >
           + Add to next actions
         </button>
+        <FeedbackButtons
+          onUp={() => dispatch({ type: "RECORD_FEEDBACK", record: { id: `${targetId}-up`, targetType: "chat-message", targetId, sentiment: "up" } })}
+          onDown={() => setNoteOpen(true)}
+        />
+        <FeedbackNoteBox
+          open={noteOpen}
+          onClose={() => setNoteOpen(false)}
+          placeholder="What's wrong with this answer?"
+          onSubmit={(note) => {
+            dispatch({ type: "RECORD_FEEDBACK", record: { id: `${targetId}-down-${state.feedback.length}`, targetType: "chat-message", targetId, sentiment: "down", note: note || undefined } });
+            setNoteOpen(false);
+          }}
+        />
       </div>
     </div>
   );

@@ -10,6 +10,7 @@ const GROUPS: { label: string; items: { id: ScreenId; label: string }[] }[] = [
     label: "Core sequence",
     items: [
       { id: "a0", label: "A0 — Open the deal" },
+      { id: "a2a", label: "A2a — Search precedents" },
       { id: "a2", label: "A2 — Confirm precedent" },
       { id: "b1", label: "B1 — Grid" },
       { id: "b2", label: "B2 — Undefined term" },

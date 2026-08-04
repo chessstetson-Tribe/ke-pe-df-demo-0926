@@ -1,4 +1,5 @@
 import type { DocumentRef, GridTerm } from "@/state/types";
+import type { SponsorTier } from "@/data/precedentCorpus";
 
 // Shapes shared by every detector — designed so a real LLM call can replace a
 // detector's body later without the caller (momentSeeds.ts, or a screen's action
@@ -7,6 +8,7 @@ export interface DealCharacteristics {
   dealId: string;
   dealName: string;
   sponsor: string;
+  sponsorTier: SponsorTier;
   industry: string;
   dealSizeUsd: number;
   lenderSet: string[];

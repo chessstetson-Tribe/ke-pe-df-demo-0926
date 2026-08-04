@@ -5,6 +5,7 @@ import type {
   CrossPracticeEvent,
   DemoState,
   DiffFlag,
+  FeedbackRecord,
   GridTerm,
   NextActionItem,
   PrecedentCandidate,
@@ -30,7 +31,8 @@ export type DemoAction =
   | { type: "SET_SPINE_STAGE"; stage: SpineStageId; status: SpineStageStatus }
   | { type: "SET_DIFF_FLAGS"; flags: DiffFlag[] }
   | { type: "SET_PENDING_CROSS_PRACTICE_EVENTS"; events: CrossPracticeEvent[] }
-  | { type: "TRIGGER_CROSS_PRACTICE_EVENT"; event: CrossPracticeEvent; nextAction: NextActionItem };
+  | { type: "TRIGGER_CROSS_PRACTICE_EVENT"; event: CrossPracticeEvent; nextAction: NextActionItem }
+  | { type: "RECORD_FEEDBACK"; record: FeedbackRecord };
 
 export function demoReducer(state: DemoState, action: DemoAction): DemoState {
   switch (action.type) {
@@ -129,6 +131,9 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
         pendingCrossPracticeEvents: state.pendingCrossPracticeEvents.filter((e) => e.id !== action.event.id),
         nextActions: [...state.nextActions, action.nextAction],
       };
+
+    case "RECORD_FEEDBACK":
+      return { ...state, feedback: [...state.feedback, action.record] };
 
     default:
       return state;
