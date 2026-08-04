@@ -1,0 +1,238 @@
+{
+  "events": [
+    {
+      "label": "start",
+      "note": "cold open on the login screen",
+      "t_ms": 15
+    },
+    {
+      "label": "login_view",
+      "note": "DF Docket — Sign in with your firm identity",
+      "t_ms": 1261
+    },
+    {
+      "label": "login_click",
+      "note": "mocked enterprise SSO — Azure AD/Intapp implied, not real auth",
+      "t_ms": 1771
+    },
+    {
+      "label": "persona_view",
+      "note": "persona select — the choice reshapes every screen downstream",
+      "t_ms": 2585
+    },
+    {
+      "label": "persona_hover_partner",
+      "note": "considers Partner",
+      "t_ms": 3277
+    },
+    {
+      "label": "persona_hover_km",
+      "note": "considers Knowledge Management",
+      "t_ms": 3900
+    },
+    {
+      "label": "persona_click_associate",
+      "note": "picks Associate — mechanical work, teaches rather than just outputs",
+      "t_ms": 4798
+    },
+    {
+      "label": "dashboard_view",
+      "note": "dashboard — deal snapshot + spine/next-actions chrome already visible",
+      "t_ms": 5699
+    },
+    {
+      "label": "dashboard_click_open",
+      "note": "opens the matter — no query typed yet",
+      "t_ms": 6347
+    },
+    {
+      "label": "a0_view_blocker",
+      "note": "A0 — blocker + ranked precedents already waiting on open",
+      "t_ms": 7263
+    },
+    {
+      "label": "a0_scroll",
+      "note": "scrolls to the ranked candidate list",
+      "t_ms": 8793
+    },
+    {
+      "label": "a0_thumbsup_kindercare",
+      "note": "thumbs-up on the #1 ranked candidate (KinderCare) — feeds the match-quality signal back",
+      "t_ms": 9605
+    },
+    {
+      "label": "a0_expand_why",
+      "note": "expands why KinderCare was suggested — industry, size, anchor prototype",
+      "t_ms": 10398
+    },
+    {
+      "label": "a0_read_why",
+      "t_ms": 11722
+    },
+    {
+      "label": "a0_click_search_bank",
+      "note": "elects to search the full bank manually instead of accepting the auto-match immediately",
+      "t_ms": 12522
+    },
+    {
+      "label": "a2a_view",
+      "note": "A2a — flexible precedent search: facets + natural language, same scorer as A0",
+      "t_ms": 13262
+    },
+    {
+      "label": "a2a_type_query",
+      "note": "describes the deal in plain language rather than picking filters — literally the app's own placeholder example",
+      "t_ms": 16019
+    },
+    {
+      "label": "a2a_search_click",
+      "note": "runs the NL search",
+      "t_ms": 16846
+    },
+    {
+      "label": "a2a_results",
+      "note": "the full 15-deal bank narrows down, KinderCare on top",
+      "t_ms": 17969
+    },
+    {
+      "label": "a2a_top_result_check",
+      "note": "top result card text starts: KinderCare\nKinderCare — Childcare / earl",
+      "t_ms": 17975
+    },
+    {
+      "label": "a2a_investigate_click",
+      "note": "investigates the top-ranked candidate",
+      "t_ms": 18885
+    },
+    {
+      "label": "a2_view_entity",
+      "note": "A2 — entity detail (KUEHG Corp., Barclays, lender group, revolver upsize) confirms this is a real, richly-documented deal",
+      "t_ms": 19676
+    },
+    {
+      "label": "a2_thumbsup_why",
+      "note": "confirms the match reasoning is sound",
+      "t_ms": 20608
+    },
+    {
+      "label": "a2_read_credibility",
+      "note": "reads the credibility note — this grid-population step was already proven on this exact deal",
+      "t_ms": 21795
+    },
+    {
+      "label": "a2_click_populate_grid",
+      "note": "hands off from confirmed candidate to grid population",
+      "t_ms": 22706
+    },
+    {
+      "label": "b1_view_grid",
+      "note": "B1 — grid auto-populates with per-term grounding + review signals, never one blended score",
+      "t_ms": 23424
+    },
+    {
+      "label": "b1_scroll_1",
+      "note": "scans past the high-confidence, already-confirmed terms",
+      "t_ms": 24764
+    },
+    {
+      "label": "b1_read_leverage",
+      "note": "reads the springing covenant term — grounded in source, still unreviewed",
+      "t_ms": 25575
+    },
+    {
+      "label": "b1_confirm_leverage",
+      "note": "confirms it — fast, glanceable, no correction needed",
+      "t_ms": 26115
+    },
+    {
+      "label": "b1_read_coc",
+      "note": "reads the Change of Control term — inferred, not grounded, still needs a human check",
+      "t_ms": 26904
+    },
+    {
+      "label": "b1_correct_coc_open",
+      "note": "flags it for correction instead of a blind confirm",
+      "t_ms": 27487
+    },
+    {
+      "label": "b1_correct_coc_edit_value",
+      "note": "refines the value with the citation, not just accepting the inferred text as-is",
+      "t_ms": 42495
+    },
+    {
+      "label": "b1_correct_coc_type",
+      "note": "the reasoning is what makes this reusable teaching material later, not just a fixed value",
+      "t_ms": 63169
+    },
+    {
+      "label": "b1_correct_coc_save",
+      "note": "saves the correction — this is the live moment that will resurface at the close",
+      "t_ms": 64093
+    },
+    {
+      "label": "b1_scroll_2",
+      "note": "scrolls to the undefined-term rows",
+      "t_ms": 66010
+    },
+    {
+      "label": "b1_click_undefined_gap",
+      "note": "opens the Auto Cure gap — the system declines to guess",
+      "t_ms": 67401
+    },
+    {
+      "label": "b2_view",
+      "note": "B2 — states plainly that K&E has never defined this term; routes to Knowledge Management instead of guessing",
+      "t_ms": 68669
+    },
+    {
+      "label": "b2_read_routed",
+      "note": "the routed Next Action is visible, addressed to the right owner",
+      "t_ms": 69642
+    },
+    {
+      "label": "b2_click_back",
+      "note": "returns to the grid rather than leaving the flag stranded",
+      "t_ms": 70294
+    },
+    {
+      "label": "presenter_longpress_start",
+      "note": "long-presses the presenter dot to open the full jump list",
+      "t_ms": 71358
+    },
+    {
+      "label": "presenter_menu_open",
+      "t_ms": 72026
+    },
+    {
+      "label": "presenter_click_f1",
+      "note": "jumps to the closing moment — correction becomes a teaching artifact",
+      "t_ms": 73030
+    },
+    {
+      "label": "f1_view",
+      "note": "F1 — 'Worked examples for you': the loop closes",
+      "t_ms": 74048
+    },
+    {
+      "label": "f1_scroll",
+      "note": "scrolls through the corrections on record",
+      "t_ms": 75397
+    },
+    {
+      "label": "f1_read_prior",
+      "note": "the prior, seeded correction on a different deal — same term, same reasoning pattern",
+      "t_ms": 77095
+    },
+    {
+      "label": "f1_read_new",
+      "note": "the correction made moments ago on B1, already sitting alongside it — the corpus just grew, live",
+      "t_ms": 78607
+    },
+    {
+      "label": "end",
+      "note": "tip-to-tail run complete",
+      "t_ms": 78607
+    }
+  ],
+  "totalMs": 78705
+}
