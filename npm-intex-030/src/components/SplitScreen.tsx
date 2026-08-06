@@ -44,8 +44,8 @@ export function SplitScreen({
         <div className="mt-3 flex items-center gap-1.5 rounded-lg bg-[#fef8e7] px-3 py-2 text-xs text-[#b67c2a]">
           <FlaskConical className="h-3.5 w-3.5 flex-none" />
           <span>
-            Illustrative stub — this combination isn't a fully-sourced worked example. Ask about KinderCare / Investment
-            baskets / IP leakage for the real walkthrough.
+            Illustrative stub — this combination isn't a fully-sourced worked example. Use the suggestion chips in the ask
+            modal, or a resolved category/concern pair, for one of the 9 real cases.
           </span>
         </div>
       )}

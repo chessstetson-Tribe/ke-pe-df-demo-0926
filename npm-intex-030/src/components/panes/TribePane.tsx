@@ -74,7 +74,15 @@ export function TribePane({
           <div className="rounded-lg border bg-white p-3" style={{ borderColor: "var(--tribe-border)" }}>
             <p className="text-sm leading-relaxed text-[#1c1e1a]">{tribe.answer}</p>
 
-            {!fact ? (
+            {scenario.kind === "miss" ? (
+              <div className="mt-3 flex items-start gap-1.5 rounded-lg bg-[#f1ffed] px-2.5 py-2 text-xs text-[#10793d]">
+                <CheckCircle2 className="mt-0.5 h-3 w-3 flex-none" />
+                <div>
+                  <span className="font-bold">{tribe.correctionLabel}. </span>
+                  <span>{tribe.correctionDetail}</span>
+                </div>
+              </div>
+            ) : !fact ? (
               <div className="mt-3 rounded-lg border border-[#e6d1ff] bg-[#faf5ff] p-2.5">
                 <div className="flex items-center gap-1.5">
                   <AlertTriangle className="h-3.5 w-3.5 flex-none" style={{ color: "var(--tribe-accent)" }} />
@@ -101,6 +109,10 @@ export function TribePane({
                   Added to the shared scaffold — set by {fact.author}, scope: {fact.scope}. Source: {fact.sourceAnchor}.
                 </span>
               </div>
+            )}
+
+            {tribe.scaleNote && (
+              <p className="mt-2.5 text-[11px] leading-relaxed text-[#9a9a9a]">{tribe.scaleNote}</p>
             )}
           </div>
         )}

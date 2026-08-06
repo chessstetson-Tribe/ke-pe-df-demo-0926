@@ -1,4 +1,4 @@
-import type { Facet, Scenario } from "@/state/types";
+import type { Scenario } from "@/state/types";
 
 // The one worked example, straight from tribe-vs-vanilla-agentic-framing.md: the
 // question fails vanilla retrieval three ways at once (no single provision answers
@@ -7,6 +7,8 @@ import type { Facet, Scenario } from "@/state/types";
 // precedent pool), not invented filler.
 export const JCREW_TRAPDOOR_SCENARIO: Scenario = {
   id: "jcrew-trapdoor",
+  kind: "gap",
+  shortLabel: "J.Crew-style trapdoor",
   question: "Does this credit agreement permit a J.Crew-style trapdoor?",
   dealName: "KinderCare — Amendment No. 3 to Credit Agreement",
   vanilla: {
@@ -67,121 +69,3 @@ export const JCREW_TRAPDOOR_SCENARIO: Scenario = {
   },
 };
 
-export const SCENARIOS: Scenario[] = [JCREW_TRAPDOOR_SCENARIO];
-
-export function findScenario(id: string): Scenario | undefined {
-  return SCENARIOS.find((s) => s.id === id);
-}
-
-// Facet mode: the "atomic GUI-style search" alternative to typing. Every
-// combination resolves to SOME outcome — the atomic interaction always produces
-// a split screen — but only one combination (RESOLVED_FACET_COMBO) is the real,
-// fully-sourced worked example. The rest synthesize a labeled stub from the
-// picked terms so the seam stays visible (per live-interactive-explainer.md)
-// without ever leaving the user with a dead end.
-export const QUESTION_FACETS: Facet[] = [
-  {
-    id: "deal",
-    label: "Deal",
-    options: [
-      { label: "KinderCare — Amendment No. 3", value: "kindercare" },
-      { label: "Karman Holdings", value: "karman" },
-      { label: "Clearwater Analytics", value: "clearwater" },
-    ],
-  },
-  {
-    id: "provision",
-    label: "Provision area",
-    options: [
-      { label: "Investment baskets", value: "baskets" },
-      { label: "Financial covenants", value: "covenants" },
-      { label: "Change of control", value: "coc" },
-    ],
-  },
-  {
-    id: "concern",
-    label: "Concern",
-    options: [
-      { label: "IP / collateral leakage", value: "ip-leakage" },
-      { label: "Covenant cure mechanics", value: "cure" },
-      { label: "Sponsor control shift", value: "sponsor" },
-    ],
-  },
-];
-
-export const RESOLVED_FACET_COMBO = { deal: "kindercare", provision: "baskets", concern: "ip-leakage" };
-
-function facetLabel(facetId: string, value: string): string {
-  const facet = QUESTION_FACETS.find((f) => f.id === facetId);
-  return facet?.options.find((o) => o.value === value)?.label ?? value;
-}
-
-// Generated on the fly from whatever the user picked — never authored per
-// combination. Deliberately generic language ("the flagged mechanism", "the
-// relevant provision") rather than invented deal-specific facts, since a stub
-// has no real source document behind it.
-function buildStubScenario(facets: { deal: string; provision: string; concern: string }): Scenario {
-  const dealLabel = facetLabel("deal", facets.deal);
-  const provisionLabel = facetLabel("provision", facets.provision);
-  const concernLabel = facetLabel("concern", facets.concern);
-  const question = `Does ${dealLabel} raise a ${concernLabel.toLowerCase()} issue in its ${provisionLabel.toLowerCase()}?`;
-
-  return {
-    id: `stub-${facets.deal}-${facets.provision}-${facets.concern}`,
-    question,
-    dealName: dealLabel,
-    isStub: true,
-    vanilla: {
-      pageCount: 400,
-      chunkCount: 22,
-      scanLines: [
-        `${provisionLabel} — general provisions`,
-        `${provisionLabel} — defined terms`,
-        `${concernLabel} — related covenant language`,
-      ],
-      answer: `Yes — standard ${provisionLabel.toLowerCase()} language is present, consistent with market terms. No unusual ${concernLabel.toLowerCase()} risk is indicated in the reviewed sections.`,
-    },
-    tribe: {
-      nodes: [
-        { id: "stub-a", label: provisionLabel, doc: "§ (placeholder)" },
-        { id: "stub-b", label: concernLabel, doc: "§ (placeholder)" },
-      ],
-      edges: [["stub-a", "stub-b"]],
-      assertions: [
-        `${provisionLabel} is present in ${dealLabel} — illustrative only, not sourced`,
-        `${concernLabel} — not yet traced against this deal's actual documents`,
-      ],
-      answer: `${provisionLabel} and ${concernLabel.toLowerCase()} plausibly interact here, the way they do in the built KinderCare example — but this exact combination hasn't been walked against a real document yet.`,
-      gapLabel: "Illustrative stub",
-      gapDetail: `This combination isn't a fully-sourced worked example — it's a placeholder shaped like one. Pick "${facetLabel(
-        "deal",
-        RESOLVED_FACET_COMBO.deal,
-      )}" / "${facetLabel("provision", RESOLVED_FACET_COMBO.provision)}" / "${facetLabel(
-        "concern",
-        RESOLVED_FACET_COMBO.concern,
-      )}" for the real, fully-sourced walkthrough.`,
-      confirmCta: "Confirm this pattern (stub) →",
-      fact: {
-        id: `stub-fact-${facets.provision}-${facets.concern}`,
-        term: `${provisionLabel} / ${concernLabel}`,
-        definition: `Placeholder definition for the ${provisionLabel.toLowerCase()} + ${concernLabel.toLowerCase()} pattern — illustrative only.`,
-        author: "you",
-        scope: "org-wide — every deal, for the rest of this session",
-        sourceAnchor: "(stub — no source document behind this combination)",
-      },
-    },
-    rerun: {
-      dealName: "a second deal (stub)",
-      vanillaAnswer: `Yes — standard ${provisionLabel.toLowerCase()} language is present. No unusual risk indicated.`,
-      tribeAnswerTemplate: `Flagged immediately using the "{{fact}}" pattern defined earlier — same stub logic, no re-analysis needed.`,
-    },
-  };
-}
-
-export function resolveFacetScenario(facets: { deal: string; provision: string; concern: string }): Scenario {
-  const isResolved =
-    facets.deal === RESOLVED_FACET_COMBO.deal &&
-    facets.provision === RESOLVED_FACET_COMBO.provision &&
-    facets.concern === RESOLVED_FACET_COMBO.concern;
-  return isResolved ? JCREW_TRAPDOOR_SCENARIO : buildStubScenario(facets);
-}

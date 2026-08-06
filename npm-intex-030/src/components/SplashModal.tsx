@@ -12,7 +12,7 @@ export function SplashModal({ onStart }: { onStart: () => void }) {
           Investigate precedent — watch side-by-side OOB vs Tribe
         </h1>
         <p className="mt-3 text-sm leading-relaxed text-[#7a7a7a]">
-          Left: what an OOB agentic SaaS tool surfaces. Right: what Tribe's scaffold catches — and what happens when you
+          Left: what an OOB agentic SaaS tool surfaces. Right: what Tribe's system catches — and what happens when you
           teach it something the firm has never written down.
         </p>
         <button
