@@ -13,7 +13,7 @@ A ~4-minute core demo of the `npm-intex-030` explainer, plus an **Extras** secti
 ### 0:00 — Open with the value statement, before the app is even up
 
 **Say:**
-> Before we get into it — here's the headline. We can offer a state-of-the-art system that's bespoke and customizable to K&E's own workflows, owned end-to-end by K&E, and that starts paying off on real matters in the near term while compounding in value over time through its own feedback loops. That's what protects — and grows — K&E's own value proposition, its corpus of precedent, in a way that stays fully in your control, not locked inside someone else's platform.
+> What we'd like to preview for you is some features of the kind of state-of-the-art system that's bespoke and customizable to K&E's own workflows, owned end-to-end by K&E, and that starts paying off on real matters in the near term while compounding in value over time through its own feedback loops. That's what protects — and grows — K&E's own value proposition, its corpus of precedent, in a way that stays fully in your control, not locked inside someone else's platform.
 
 **Say:**
 > And to be clear up front: we're not committing to one particular technical approach here. What you're about to see is illustrative — it's us showing you how we'd think about this problem smartly, not a spec for exactly what ships.
@@ -117,7 +117,7 @@ A ~4-minute core demo of the `npm-intex-030` explainer, plus an **Extras** secti
 > One more thing worth naming — the underlying techniques — narrowing to the relevant passage before extracting, forcing everything into one fixed schema before comparing — are infrastructure Tribe already built and validated on debt finance itself, and half of it is directly reused from work we did on the M&A side of the firm. The piece that we're exploring here that's new is the precedent index, where we likewise expect to get industry-leading accuracy.
 
 **Say:**
-> So — back to where we started. This is what we mean by state-of-the-art, bespoke and customizable to your workflows, and owned end-to-end by K&E: every fact it ever surfaces has a citation, every correction your attorneys make becomes durable, and none of it lives anywhere but in a scaffold that's yours. It pays for itself on real matters now, and it compounds — the corpus of precedent that's already your firm's edge gets more valuable every time someone uses this, instead of sitting still.
+> So what I've shown here was bespoke and customizable to your workflows, and owned end-to-end by K&E: every fact it ever surfaces has a citation, every correction your attorneys make becomes durable, and none of it lives anywhere but in a scaffold that's yours. It pays for itself on real matters now, and it compounds — the corpus of precedent that's already your firm's edge gets more valuable every time someone uses this, instead of sitting still.
 
 **Action:** Hold on the split screen; end here.
 
