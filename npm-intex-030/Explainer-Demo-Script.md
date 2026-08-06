@@ -44,7 +44,7 @@ A ~4-minute core demo of the `npm-intex-030` explainer, plus an **Extras** secti
 ### 0:50 — Workflow: open the Grid, tap the flagged term
 
 **Say:**
-> Let's use the Workflow view here, since it's an example of the kind of actual "iPhone"-style app workflow your associates would be sitting in.
+> Let's use the Workflow view here — the goal is for it to feel this intuitive and tap-through-simple, not like a chat window. This is the actual workflow your associates would be sitting in.
 
 **Action:** Hover, then click "Workflow."
 
@@ -93,7 +93,7 @@ A ~4-minute core demo of the `npm-intex-030` explainer, plus an **Extras** secti
 ### 2:20 — The gap, named instead of guessed
 
 **Say:**
-> The left side answers confidently — yes, open market purchases are permitted — and never mentions anything unusual. The right side finds the same provision, but also notices that "open market purchase" itself is never actually defined anywhere in this document. That's the same undefined-term risk the market has called the Serta issue since 2020 — not a claim about this firm's judgment, just an observable fact about the drafting. Across the same fifteen-deal review, this exact term went undefined in fourteen of fifteen deals.
+> The left side answers confidently — yes, open market purchases are permitted — and never mentions anything unusual. The right side finds the same provision, but also notices that "open market purchase" itself is never actually defined anywhere in this document. That's the same undefined-term risk the market has called the Serta issue since 2020 — not a claim about this firm's judgment, just an observable fact about the drafting. Across the same fifteen-deal review, K&E hasn't set a firm-specific standard for this term in almost any of them — most deals just fall back on baseline industry convention instead.
 
 **Action:** Hover, then click "Set the firm-wide standard for 'open market purchase' →."
 
@@ -127,15 +127,17 @@ A ~4-minute core demo of the `npm-intex-030` explainer, plus an **Extras** secti
 
 ### Quick index
 
+**Priority order, if you only have time for a couple of backups:** Matter 7 (Liens — shared/stacked baskets) is the must-include of the group, since Kirkland has specifically flagged stacked/shared baskets as a known gotcha. Matters 3 (MFN) and 4 (EBITDA Add-Backs) are both strong alternates — any of the three works, since all three are stronger apples-to-apples comparisons than the two "blocker" gaps, hinging on a checkable fact rather than a firm judgment call.
+
 | # | Matter | Flagged term | Kind | The one-line hook |
 |---|---|---|---|---|
+| 7 ★★ must-include | Aerospace-components deal | Liens (shared/stacked baskets) | Miss | Two lien baskets look additive; a tail provision lets the borrower reclassify and stack one on top of the other at its own discretion. |
+| 3 ★ | Childcare-sector deal (Amendment No. 3) | Incremental MFN | Miss | A second, identical MFN is hidden inside a different definition — and the sunset date means neither one is actually live anymore. |
+| 4 ★ | Commercial-landscaping-services deal | EBITDA Add-Backs | Miss | Confirming "no cap" on the add-back clause you found is correct *and* incomplete — a second, independently-drafted uncapped channel sits in a totally separate definition. |
 | 1 | KinderCare — Amendment No. 3 | J.Crew-style trapdoor | Gap | Stacked investment baskets + an unrestricted-sub mechanic + an IP carve-out create the same structural path at issue in the 2014 J.Crew deal — real in the document, not yet firm-flagged. |
-| 3 | Childcare-sector deal (Amendment No. 3) | Incremental MFN | Miss | A second, identical MFN is hidden inside a different definition — and the sunset date means neither one is actually live anymore. |
-| 4 | Commercial-landscaping-services deal | EBITDA Add-Backs | Miss | Confirming "no cap" on the add-back clause you found is correct *and* incomplete — a second, independently-drafted uncapped channel sits in a totally separate definition. |
 | 5 | Healthcare-products distribution deal | Asset Sale Sweep | Miss | A nearby mention of "Casualty Events" reads like confirmation that casualty proceeds are swept — they're not; the actual trigger's defined term excludes them. |
 | 6 | Security-and-alarm-monitoring deal | Restricted Debt Payments | Miss | The dollar baskets are extracted correctly and the practical answer is still wrong, because the covered-debt definition is narrower than it looks — junior-lien debt isn't actually restricted at all. |
-| 7 | Aerospace-components deal | Liens (reclassification tail) | Miss | Two lien baskets look additive; a tail provision lets the borrower reclassify and stack one on top of the other at its own discretion. |
-| 9 | A new deal — term outside the schema | New/unseen term handling | Gap | Ties directly to Jill's own Stage-1 question: should new terms be auto-picked-up, or does a schema owner confirm them first? Tribe routes rather than guesses either way. |
+| 9 | A new deal — term not yet in the schema | New/unseen term handling | Gap | Ties directly to Jill's own Stage-1 question: should new terms be auto-picked-up, or does a schema owner confirm them first? Tribe routes rather than guesses either way. |
 
 *(Matters 2 and 8 are the two performed in the Core Demo.)*
 
@@ -218,7 +220,7 @@ Each one assumes you're starting from the split screen or the splash. General se
 **Action:** Open Matter 9 of 9. Mode: Workflow → hover, click "Workflow."
 
 **Say:**
-> This is the one that answers Jill's own Stage-1 question directly: what happens when a term shows up that isn't on the standard forty-six-term list at all? Notice this matter's grid doesn't even show a normal highlighted row for it — it's a dashed "flag this unrecognized term" affordance instead.
+> This is the one that answers Jill's own Stage-1 question directly: what happens when a term shows up that isn't yet in the schema at all? Notice this matter's grid doesn't even show a normal highlighted row for it — it's a dashed "flag this unrecognized term" affordance instead.
 
 **Action:** Hover, then click "Flag this unrecognized term," then "Route to schema owner →" (this submits and opens the split screen).
 

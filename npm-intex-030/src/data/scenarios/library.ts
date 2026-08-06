@@ -238,7 +238,7 @@ export const RESTRICTED_DEBT_PAYMENTS_SCENARIO: Scenario = {
 export const LIENS_SCENARIO: Scenario = {
   id: "liens",
   kind: "miss",
-  shortLabel: "Liens (reclassification tail)",
+  shortLabel: "Liens (shared/stacked baskets)",
   question: "What is the total secured-lien capacity available to this borrower?",
   dealName: "An aerospace-components credit agreement",
   vanilla: {
@@ -311,7 +311,7 @@ export const OPEN_MARKET_PURCHASE_SCENARIO: Scenario = {
       "The provision exists, but \"open market purchase\" itself is never defined — the same category of undefined-term risk the market has called a Serta issue since 2020. It's not that the firm has no view; the document's drafting never pinned the term down, and nobody's supplied a firm-wide standard either.",
     gapLabel: "Undefined term (post-Serta)",
     gapDetail:
-      "\"Open market purchase\" appears in this provision but is never a defined term — and K&E hasn't yet asserted a standing firm-wide standard for what should count. Across a 15-deal sample, this exact term went undefined in all but one deal.",
+      "\"Open market purchase\" appears in this provision but is never a defined term — and K&E hasn't yet asserted a standing firm-wide standard for what should count. Across a 15-deal sample, almost none of them set a firm-specific standard for it either — most just fall back on baseline industry convention.",
     confirmCta: "Set the firm-wide standard for \"open market purchase\" →",
     fact: {
       id: "fact-open-market-purchase",
@@ -320,7 +320,7 @@ export const OPEN_MARKET_PURCHASE_SCENARIO: Scenario = {
         "A purchase of the borrower's own debt executed through ordinary secondary-market trading channels, at prevailing market prices, without a Dutch-auction or negotiated-tender process and without using MNPI obtained as a lender.",
       author: "you",
       scope: "org-wide — every deal, for the rest of this session",
-      sourceAnchor: "aircraft-engine-MRO credit agreement, §10.07(j); pattern confirmed across 14 of 15 deals reviewed",
+      sourceAnchor: "aircraft-engine-MRO credit agreement, §10.07(j); pattern confirmed across a 15-deal review — no firm-specific standard set in nearly any of them",
     },
   },
   rerun: {
@@ -334,14 +334,14 @@ export const OPEN_MARKET_PURCHASE_SCENARIO: Scenario = {
 
 // --- New/unseen term handling — cross-cutting governance case -----------------
 // Not a specific extraction miss — the open Stage-1 design question of what
-// happens when a term shows up that isn't in the firm's 46-term schema at all.
+// happens when a term shows up that isn't yet in the firm's schema at all.
 // Vanilla's failure mode here is different in kind: it answers anyway, from
 // general knowledge, ungrounded in either deal's actual file.
 export const NEW_TERM_HANDLING_SCENARIO: Scenario = {
   id: "new-term-handling",
   kind: "gap",
   shortLabel: "New/unseen term handling",
-  question: "This deal has a term outside the standard 46-term list — how should that be handled?",
+  question: "This deal has a term that's not yet in the firm's extraction schema — how should that be handled?",
   dealName: "A new deal — a term outside the current schema",
   vanilla: {
     pageCount: 390,
@@ -352,7 +352,7 @@ export const NEW_TERM_HANDLING_SCENARIO: Scenario = {
   },
   tribe: {
     nodes: [
-      { id: "schema-check", label: "46-term schema check", doc: "firm term list" },
+      { id: "schema-check", label: "Firm schema check", doc: "firm term list" },
       { id: "no-match", label: "No match found", doc: "—" },
       { id: "routing", label: "Routed to schema owner", doc: "—" },
     ],
@@ -361,7 +361,7 @@ export const NEW_TERM_HANDLING_SCENARIO: Scenario = {
       ["no-match", "routing"],
     ],
     assertions: [
-      "This term does not match any of the 46 terms currently in the firm's extraction schema",
+      "This term is not yet in the firm's extraction schema",
       "Answering from general knowledge would not be grounded in this deal's own file",
       "Open Stage-1 design question: should new terms be picked up automatically, or does a schema owner flag them first?",
     ],

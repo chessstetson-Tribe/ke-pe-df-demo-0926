@@ -41,7 +41,7 @@ export function SingleDealWorkflow({ scenario, onAsk }: { scenario: Scenario; on
           <div>
             <div className="text-sm font-semibold text-[#1c1e1a]">Term not on this grid</div>
             <p className="mt-1 text-xs leading-relaxed text-[#6b46a3]">
-              This matter has language that doesn't match any of the firm's standard 46 terms. Before it's treated as
+              This matter has language that isn't yet in the firm's extraction schema. Before it's treated as
               gradeable anywhere, it needs a schema owner to confirm it belongs and how it should be extracted.
             </p>
           </div>
