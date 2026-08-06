@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { AlertTriangle, CheckCircle2, GitBranch } from "lucide-react";
 import { Chip } from "@/components/shared/Chip";
+import { Spinner } from "@/components/shared/Spinner";
 import { MiniGraph } from "@/components/panes/MiniGraph";
 import type { ScaffoldFact, Scenario } from "@/state/types";
+
+const SCAFFOLD_WRITE_DELAY_MS = 700;
 
 type Step = "traversing" | "answer";
 
@@ -25,6 +28,7 @@ export function TribePane({
 }) {
   const { tribe, dealName } = scenario;
   const [step, setStep] = useState<Step>("traversing");
+  const [committing, setCommitting] = useState(false);
 
   useEffect(() => {
     setStep("traversing");
@@ -35,6 +39,13 @@ export function TribePane({
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dealName]);
+
+  function handleConfirm() {
+    setCommitting(true);
+    setTimeout(() => {
+      onConfirm();
+    }, SCAFFOLD_WRITE_DELAY_MS);
+  }
 
   return (
     <div className="flex h-full flex-col rounded-xl border p-5" style={{ borderColor: "var(--tribe-border)", background: "var(--tribe-bg)" }}>
@@ -93,14 +104,21 @@ export function TribePane({
                 <p className="mt-1 text-xs leading-relaxed" style={{ color: "var(--tribe-text)" }}>
                   {tribe.gapDetail}
                 </p>
-                <button
-                  type="button"
-                  onClick={onConfirm}
-                  className="mt-2 rounded-[6px] px-2.5 py-1 text-xs font-bold text-white"
-                  style={{ background: "var(--tribe-accent)" }}
-                >
-                  {tribe.confirmCta}
-                </button>
+                {committing ? (
+                  <div className="mt-2 flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold" style={{ color: "var(--tribe-accent)" }}>
+                    <Spinner />
+                    Writing to scaffold…
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={handleConfirm}
+                    className="mt-2 rounded-[6px] px-2.5 py-1 text-xs font-bold text-white"
+                    style={{ background: "var(--tribe-accent)" }}
+                  >
+                    {tribe.confirmCta}
+                  </button>
+                )}
               </div>
             ) : (
               <div className="mt-3 flex items-start gap-1.5 rounded-lg bg-[#f1ffed] px-2.5 py-2 text-xs text-[#10793d]">

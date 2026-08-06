@@ -1,8 +1,12 @@
+import { useState } from "react";
 import { RotateCcw, FlaskConical } from "lucide-react";
 import { VanillaPane } from "@/components/panes/VanillaPane";
 import { TribePane } from "@/components/panes/TribePane";
 import { RerunRow } from "@/components/panes/RerunRow";
+import { Spinner } from "@/components/shared/Spinner";
 import type { Scenario, TribeBeat } from "@/state/types";
+
+const SCAFFOLD_CHECK_DELAY_MS = 700;
 
 export function SplitScreen({
   scenario,
@@ -22,6 +26,14 @@ export function SplitScreen({
   onReset: () => void;
 }) {
   const factCommitted = beat === "corrected" || beat === "reran";
+  const [rerunning, setRerunning] = useState(false);
+
+  function handleRerun() {
+    setRerunning(true);
+    setTimeout(() => {
+      onRerun();
+    }, SCAFFOLD_CHECK_DELAY_MS);
+  }
 
   return (
     <div className="mx-auto w-full max-w-5xl px-6 py-8">
@@ -69,14 +81,21 @@ export function SplitScreen({
 
       {factCommitted && beat !== "reran" && (
         <div className="mt-4 flex items-center justify-center">
-          <button
-            type="button"
-            onClick={onRerun}
-            className="rounded-[6px] px-3 py-1.5 text-xs font-bold text-white"
-            style={{ background: "var(--accent-blue)" }}
-          >
-            Run this same question on a second deal →
-          </button>
+          {rerunning ? (
+            <div className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold" style={{ color: "var(--accent-blue)" }}>
+              <Spinner />
+              Checking the scaffold…
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={handleRerun}
+              className="rounded-[6px] px-3 py-1.5 text-xs font-bold text-white"
+              style={{ background: "var(--accent-blue)" }}
+            >
+              Run this same question on a second deal →
+            </button>
+          )}
         </div>
       )}
 
