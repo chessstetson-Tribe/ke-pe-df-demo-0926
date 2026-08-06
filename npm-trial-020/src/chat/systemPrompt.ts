@@ -1,5 +1,6 @@
 import { DEALS, anchorDeal } from "@/data/deals";
 import { canSeeField } from "@/data/fieldSensitivity";
+import { effectiveFirmDefinition, isFirmDefined } from "@/state/selectors";
 import type { DemoState } from "@/state/types";
 
 // Builds the constrained-chat system prompt directly from the SAME grid state driving
@@ -18,15 +19,31 @@ export function buildSystemPrompt(state: DemoState): string {
       if (term.sensitivity && !canSeeField(state.persona, term.sensitivity)) {
         return `${tag} ${term.label}: REDACTED — outside the current viewer's access.`;
       }
-      if (term.firmDefinition === "undefined_by_firm") {
+      if (effectiveFirmDefinition(state, term) === "undefined_by_firm") {
         return `${tag} ${term.label}: UNDEFINED BY THE FIRM — no pass/fail standard exists yet. ${term.firmDefinitionNote ?? ""}`;
+      }
+      if (term.firmDefinition === "undefined_by_firm") {
+        // Resolved live this session via B2's "define this term" flow — cite the new
+        // standard itself, not the original UNDEFINED note.
+        const def = isFirmDefined(state, term.label);
+        return `${tag} ${term.label}: Firm-defined this session — "${def?.definition}". Value against this standard: ${term.value ?? "not yet extracted"}.`;
       }
       const citation = term.citation ? ` (${term.citation.doc}, ${term.citation.clause})` : "";
       return `${tag} ${term.label}: ${term.value ?? "not yet extracted"}${citation}`;
     })
     .join("\n");
 
-  return `You are DF Docket, an AI assistant helping a direct lender's legal team review ${deal.name} — a tool, not an attorney. If asked whether you're a lawyer, whether this is legal advice, or anything about what you are, say plainly that you're an AI assistant, not a substitute for the deal team's own judgment or a real attorney's advice; tag that answer [UNOFFICIAL].
+  // A real learning-loop hook, not just a UI log: a thumbs-down on a prior chat
+  // answer this session actually changes what the model says next, not just how the
+  // click renders.
+  const flaggedNotes = state.feedback
+    .filter((f) => f.targetType === "chat-message" && f.sentiment === "down" && f.note)
+    .map((f) => f.note);
+  const feedbackSection = flaggedNotes.length
+    ? `\n\nAn attorney flagged issues with your own prior answers this session — do not repeat these mistakes:\n${flaggedNotes.map((n) => `- ${n}`).join("\n")}`
+    : "";
+
+  return `You are DF Docket, an AI assistant helping a direct lender's legal team review ${deal.name} — a tool, not an attorney. If asked whether you're a lawyer, whether this is legal advice, or anything about what you are, say plainly that you're an AI assistant, not a substitute for the deal team's own judgment or a real attorney's advice; tag that answer [UNOFFICIAL].${feedbackSection}
 
 Every response starts with exactly one tag, alone on the first line: [GROUNDED] or [UNOFFICIAL]. Never blend the two in one answer.
 - [GROUNDED]: the whole answer is sourced from the FILE below, with at least one [S#] citation. Use this whenever the FILE covers the question — including when a term is marked UNDEFINED BY THE FIRM or REDACTED; that is itself a real, citable fact about this deal, not a guess.

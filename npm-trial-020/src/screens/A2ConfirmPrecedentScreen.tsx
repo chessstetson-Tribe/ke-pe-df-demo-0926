@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { ArrowRight, Sparkles, X } from "lucide-react";
+import { ArrowRight, Sparkles, TrendingDown, TrendingUp, X } from "lucide-react";
 import { useDemoDispatch, useDemoState, useNavigate } from "@/state/DemoStateContext";
 import { DEALS } from "@/data/deals";
 import { PRECEDENT_CORPUS } from "@/data/precedentCorpus";
+import { effectiveMatchScore, precedentVoteBoost, rejectedFactors } from "@/state/selectors";
 import { RedactedField } from "@/components/chrome/RedactedField";
 import { FOCUS } from "@/components/shared/focus";
 import { FeedbackButtons } from "@/components/shared/FeedbackButtons";
@@ -15,8 +16,8 @@ export function A2ConfirmPrecedentScreen() {
   const state = useDemoState();
   const dispatch = useDemoDispatch();
   const navigate = useNavigate();
-  const [rejectedReasons, setRejectedReasons] = useState<Set<string>>(new Set());
   const [pickerOpenFor, setPickerOpenFor] = useState<string | null>(null);
+  const rejected = rejectedFactors(state);
 
   const underReviewId = state.selectedPrecedentId ?? state.precedentCandidates[0]?.precedentDealId;
   const candidate = state.precedentCandidates.find((c) => c.precedentDealId === underReviewId);
@@ -26,15 +27,17 @@ export function A2ConfirmPrecedentScreen() {
   const lenders = Array.from(new Set(PRECEDENT_CORPUS.flatMap((d) => d.lenderNames))).sort();
   const industries = Array.from(new Set(PRECEDENT_CORPUS.map((d) => d.industry))).sort();
 
-  const alternates = state.precedentCandidates.filter((c) => {
-    if (c.precedentDealId === underReviewId) return false;
-    if (!state.precedentFilter) return true;
-    const row = PRECEDENT_CORPUS.find((d) => d.id === c.precedentDealId);
-    if (!row) return false;
-    if (state.precedentFilter.lender && !row.lenderNames.includes(state.precedentFilter.lender)) return false;
-    if (state.precedentFilter.industry && row.industry !== state.precedentFilter.industry) return false;
-    return true;
-  });
+  const alternates = state.precedentCandidates
+    .filter((c) => {
+      if (c.precedentDealId === underReviewId) return false;
+      if (!state.precedentFilter) return true;
+      const row = PRECEDENT_CORPUS.find((d) => d.id === c.precedentDealId);
+      if (!row) return false;
+      if (state.precedentFilter.lender && !row.lenderNames.includes(state.precedentFilter.lender)) return false;
+      if (state.precedentFilter.industry && row.industry !== state.precedentFilter.industry) return false;
+      return true;
+    })
+    .sort((a, b) => effectiveMatchScore(state, b) - effectiveMatchScore(state, a));
 
   function populateGridFrom(id: string) {
     dispatch({ type: "SELECT_PRECEDENT", precedentId: id });
@@ -85,28 +88,29 @@ export function A2ConfirmPrecedentScreen() {
           </div>
           <ul className="mt-2 space-y-1 text-sm leading-relaxed text-[#7a7a7a]">
             {candidate.matchedOn.map((reason) => {
-              const rejected = rejectedReasons.has(reason);
+              const rejectable = reason.factor !== "other";
+              const isRejected = rejected.has(reason.factor);
               return (
-                <li key={reason} className="flex items-center gap-1.5">
-                  <span className={rejected ? "text-[#bbbbbb] line-through" : ""}>• {reason}</span>
-                  {rejected ? (
-                    <span className="text-xs font-medium text-[#9a9a9a]">noted — de-emphasizing this</span>
-                  ) : (
-                    <button
-                      type="button"
-                      title="Not relevant"
-                      onClick={() => {
-                        setRejectedReasons((prev) => new Set(prev).add(reason));
-                        dispatch({
-                          type: "RECORD_FEEDBACK",
-                          record: { id: `match-reason-${underReviewId}-${reason}-${state.feedback.length}`, targetType: "match-reason", targetId: `${underReviewId}::${reason}`, sentiment: "down", note: reason },
-                        });
-                      }}
-                      className="rounded-[4px] p-0.5 text-[#d9d9d9] hover:bg-[#f5f6f9] hover:text-[#c0392b]"
-                    >
-                      <X className="h-3.5 w-3.5" />
-                    </button>
-                  )}
+                <li key={reason.label} className="flex items-center gap-1.5">
+                  <span className={isRejected ? "text-[#bbbbbb] line-through" : ""}>• {reason.label}</span>
+                  {rejectable &&
+                    (isRejected ? (
+                      <span className="text-xs font-medium text-[#9a9a9a]">noted — de-emphasizing this factor everywhere</span>
+                    ) : (
+                      <button
+                        type="button"
+                        title="Not relevant"
+                        onClick={() =>
+                          dispatch({
+                            type: "RECORD_FEEDBACK",
+                            record: { id: `match-reason-${reason.factor}-${state.feedback.length}`, targetType: "match-reason", targetId: reason.factor, sentiment: "down", note: reason.label },
+                          })
+                        }
+                        className="rounded-[4px] p-0.5 text-[#d9d9d9] hover:bg-[#f5f6f9] hover:text-[#c0392b]"
+                      >
+                        <X className="h-3.5 w-3.5" />
+                      </button>
+                    ))}
                 </li>
               );
             })}
@@ -198,11 +202,20 @@ export function A2ConfirmPrecedentScreen() {
             {alternates.length === 0 ? (
               <p className="text-xs text-[#bbbbbb]">No other candidates match this filter.</p>
             ) : (
-              alternates.map((c) => (
+              alternates.map((c) => {
+                const boost = precedentVoteBoost(state, c.precedentDealId);
+                return (
                 <div key={c.precedentDealId} className="flex items-center justify-between rounded-lg border border-[rgba(0,0,0,0.08)] bg-white px-3 py-2">
                   <div>
                     <div className="text-sm font-medium text-[#1c1e1a]">{c.dealName}</div>
-                    <div className="text-xs text-[#9a9a9a]">{c.industry} · {c.matchScore}% match</div>
+                    <div className="flex items-center gap-1.5 text-xs text-[#9a9a9a]">
+                      <span>{c.industry} · {effectiveMatchScore(state, c)}% match</span>
+                      {boost !== 0 && (
+                        <span className={`flex items-center gap-0.5 font-bold ${boost > 0 ? "text-[#10793d]" : "text-[#c0392b]"}`}>
+                          {boost > 0 ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
+                        </span>
+                      )}
+                    </div>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="relative">
@@ -235,7 +248,8 @@ export function A2ConfirmPrecedentScreen() {
                     </button>
                   </div>
                 </div>
-              ))
+                );
+              })
             )}
           </div>
           {corpusRow && !deal?.entity && (

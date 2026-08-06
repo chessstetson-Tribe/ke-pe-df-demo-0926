@@ -28,6 +28,7 @@ export function createInitialState(): DemoState {
     crossPracticeEvents: [],
     pendingCrossPracticeEvents: [],
     feedback: [],
+    firmDefinitions: [],
     dirty: {},
   };
 }

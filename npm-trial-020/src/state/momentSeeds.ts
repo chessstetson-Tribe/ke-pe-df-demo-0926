@@ -7,6 +7,7 @@ import { detectUndefinedTerms } from "@/detectors/detectUndefinedTerms";
 import { diffTermSheet } from "@/detectors/diffTermSheet";
 import { watchCrossPracticeFeed } from "@/detectors/watchCrossPracticeFeed";
 import { SUNGARD_DEAL_ID } from "@/data/sunGardDiff";
+import { effectiveFirmDefinition } from "./selectors";
 import type { DemoAction } from "./reducer";
 import type { DemoState, GridTerm, NextActionItem, ScreenId } from "./types";
 
@@ -39,7 +40,7 @@ export async function seedScreen(
       // BEFORE this function's own dispatches landed, so re-reading it would still
       // see the empty pre-seed grid.
       const terms = await ensureGrid(state, dispatch);
-      seedB2Focus(terms, dispatch);
+      seedB2Focus(terms, dispatch, state);
       return;
     }
     case "c1":
@@ -112,8 +113,10 @@ async function ensurePendingCrossPracticeEvents(state: DemoState, dispatch: Disp
   dispatch({ type: "SET_PENDING_CROSS_PRACTICE_EVENTS", events });
 }
 
-function seedB2Focus(terms: GridTerm[], dispatch: Dispatch<DemoAction>): void {
-  const undefinedTerm = terms.find((t) => t.firmDefinition === "undefined_by_firm");
+function seedB2Focus(terms: GridTerm[], dispatch: Dispatch<DemoAction>, state: DemoState): void {
+  // Effective, not raw — a term already firm-defined (via another deal, this
+  // session) is resolved and shouldn't be re-flagged on a cold jump into B2.
+  const undefinedTerm = terms.find((t) => effectiveFirmDefinition(state, t) === "undefined_by_firm");
   if (!undefinedTerm) return;
   dispatch({ type: "FOCUS_GRID_TERM", termId: undefinedTerm.id });
   const item: NextActionItem = {

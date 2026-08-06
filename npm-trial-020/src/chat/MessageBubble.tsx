@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, CheckCircle2, ThumbsDown } from "lucide-react";
 import { confColor, confFromText, renderCites } from "@/components/shared/Cite";
 import { FeedbackButtons } from "@/components/shared/FeedbackButtons";
 import { FeedbackNoteBox } from "@/components/shared/FeedbackNoteBox";
@@ -12,6 +12,9 @@ export function MessageBubble({ message, index }: { message: ChatMessage; index:
   const state = useDemoState();
   const [noteOpen, setNoteOpen] = useState(false);
   const targetId = `chat-message-${index}`;
+  const myFeedback = state.feedback.filter((f) => f.targetType === "chat-message" && f.targetId === targetId);
+  const isVerified = myFeedback.some((f) => f.sentiment === "up");
+  const flaggedNote = myFeedback.find((f) => f.sentiment === "down" && f.note)?.note;
 
   if (message.role === "user") {
     return (
@@ -56,6 +59,12 @@ export function MessageBubble({ message, index }: { message: ChatMessage; index:
             {confidence} confidence
           </span>
         )}
+        {isVerified && (
+          <span className="flex items-center gap-1 rounded-full border border-transparent bg-[#f1ffed] px-2 py-0.5 text-xs font-bold text-[#10793d]">
+            <CheckCircle2 className="h-3 w-3" />
+            Verified by {state.persona.personaId}
+          </span>
+        )}
       </div>
 
       {isUnofficial ? (
@@ -68,6 +77,13 @@ export function MessageBubble({ message, index }: { message: ChatMessage; index:
         </div>
       ) : (
         <div className="mt-2 pl-10 font-serif text-base leading-relaxed text-[#1c1e1a]">{renderCites(message.text)}</div>
+      )}
+
+      {flaggedNote && (
+        <div className="mt-2 ml-10 flex items-start gap-1.5 rounded-lg bg-[#fdeeec] px-2.5 py-1.5 text-xs text-[#c0392b]">
+          <ThumbsDown className="mt-0.5 h-3 w-3 flex-none" />
+          <span>Flagged: {flaggedNote} — the assistant won't repeat this for the rest of the session.</span>
+        </div>
       )}
 
       <div className={`relative mt-2 flex items-center gap-2 ${isUnofficial ? "ml-10" : "pl-10"}`}>

@@ -6,6 +6,7 @@ import type {
   DemoState,
   DiffFlag,
   FeedbackRecord,
+  FirmDefinition,
   GridTerm,
   NextActionItem,
   PrecedentCandidate,
@@ -32,7 +33,8 @@ export type DemoAction =
   | { type: "SET_DIFF_FLAGS"; flags: DiffFlag[] }
   | { type: "SET_PENDING_CROSS_PRACTICE_EVENTS"; events: CrossPracticeEvent[] }
   | { type: "TRIGGER_CROSS_PRACTICE_EVENT"; event: CrossPracticeEvent; nextAction: NextActionItem }
-  | { type: "RECORD_FEEDBACK"; record: FeedbackRecord };
+  | { type: "RECORD_FEEDBACK"; record: FeedbackRecord }
+  | { type: "ADD_FIRM_DEFINITION"; definition: FirmDefinition };
 
 export function demoReducer(state: DemoState, action: DemoAction): DemoState {
   switch (action.type) {
@@ -134,6 +136,20 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
 
     case "RECORD_FEEDBACK":
       return { ...state, feedback: [...state.feedback, action.record] };
+
+    case "ADD_FIRM_DEFINITION":
+      if (state.firmDefinitions.some((d) => d.label === action.definition.label)) return state;
+      return {
+        ...state,
+        firmDefinitions: [...state.firmDefinitions, action.definition],
+        // Same resolution rule B2's own routedItem lookup already uses (sourceModule +
+        // title containing the term label) — defining the term IS the resolution.
+        nextActions: state.nextActions.map((i) =>
+          i.sourceModule === "b2.undefinedTerm" && i.title.includes(action.definition.label)
+            ? { ...i, status: "resolved" }
+            : i,
+        ),
+      };
 
     default:
       return state;

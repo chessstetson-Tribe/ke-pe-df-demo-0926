@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { ArrowRight, ChevronDown, ChevronUp, Search, X } from "lucide-react";
+import { ArrowRight, ChevronDown, ChevronUp, Search, TrendingDown, TrendingUp, X } from "lucide-react";
 import { useDemoDispatch, useDemoState, useNavigate } from "@/state/DemoStateContext";
 import { PRECEDENT_CORPUS, SPONSOR_TIER_LABEL, type SponsorTier } from "@/data/precedentCorpus";
 import { searchPrecedentsByFacets, searchPrecedentsByQuery, type PrecedentSearchFilters } from "@/detectors/searchPrecedents";
 import type { PrecedentCandidate } from "@/state/types";
+import { effectiveMatchScore, precedentVoteBoost, rejectedFactors } from "@/state/selectors";
 import { FOCUS } from "@/components/shared/focus";
 import { FeedbackButtons } from "@/components/shared/FeedbackButtons";
 import { FeedbackReasonPicker } from "@/components/shared/FeedbackReasonPicker";
@@ -24,7 +25,9 @@ function CandidateCard({ candidate, onInvestigate }: { candidate: PrecedentCandi
   const state = useDemoState();
   const [expanded, setExpanded] = useState(false);
   const [pickerOpen, setPickerOpen] = useState(false);
-  const [rejectedReasons, setRejectedReasons] = useState<Set<string>>(new Set());
+  const rejected = rejectedFactors(state);
+  const score = effectiveMatchScore(state, candidate);
+  const boost = precedentVoteBoost(state, candidate.precedentDealId);
 
   return (
     <div className="rounded-xl border border-[rgba(0,0,0,0.08)] bg-white p-4 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
@@ -34,9 +37,15 @@ function CandidateCard({ candidate, onInvestigate }: { candidate: PrecedentCandi
           <div className="text-xs text-[#7a7a7a]">{candidate.summary}</div>
         </div>
         <div className="flex flex-none items-center gap-1.5">
-          {candidate.matchScore > 0 && (
+          {boost !== 0 && (
+            <span className={`flex items-center gap-0.5 text-[10px] font-bold ${boost > 0 ? "text-[#10793d]" : "text-[#c0392b]"}`}>
+              {boost > 0 ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
+              {boost > 0 ? "boosted" : "demoted"} by feedback
+            </span>
+          )}
+          {score > 0 && (
             <span className="rounded-[4px] bg-[#ecf4ff] px-2 py-0.5 text-xs font-bold text-[#2354e8]">
-              {candidate.matchScore}% match
+              {score}% match
             </span>
           )}
           <div className="relative">
@@ -82,28 +91,29 @@ function CandidateCard({ candidate, onInvestigate }: { candidate: PrecedentCandi
       {expanded && (
         <ul className="mt-3 space-y-1 text-xs leading-relaxed text-[#7a7a7a]">
           {candidate.matchedOn.map((reason) => {
-            const rejected = rejectedReasons.has(reason);
+            const rejectable = reason.factor !== "other";
+            const isRejected = rejected.has(reason.factor);
             return (
-              <li key={reason} className="flex items-center gap-1.5">
-                <span className={rejected ? "text-[#bbbbbb] line-through" : ""}>• {reason}</span>
-                {rejected ? (
-                  <span className="text-[10px] font-medium text-[#9a9a9a]">noted — de-emphasizing this</span>
-                ) : (
-                  <button
-                    type="button"
-                    title="Not relevant"
-                    onClick={() => {
-                      setRejectedReasons((prev) => new Set(prev).add(reason));
-                      dispatch({
-                        type: "RECORD_FEEDBACK",
-                        record: { id: `match-reason-${candidate.precedentDealId}-${reason}-${state.feedback.length}`, targetType: "match-reason", targetId: `${candidate.precedentDealId}::${reason}`, sentiment: "down", note: reason },
-                      });
-                    }}
-                    className="rounded-[4px] p-0.5 text-[#d9d9d9] hover:bg-[#f5f6f9] hover:text-[#c0392b]"
-                  >
-                    <X className="h-3 w-3" />
-                  </button>
-                )}
+              <li key={reason.label} className="flex items-center gap-1.5">
+                <span className={isRejected ? "text-[#bbbbbb] line-through" : ""}>• {reason.label}</span>
+                {rejectable &&
+                  (isRejected ? (
+                    <span className="text-[10px] font-medium text-[#9a9a9a]">noted — de-emphasizing this factor everywhere</span>
+                  ) : (
+                    <button
+                      type="button"
+                      title="Not relevant"
+                      onClick={() =>
+                        dispatch({
+                          type: "RECORD_FEEDBACK",
+                          record: { id: `match-reason-${reason.factor}-${state.feedback.length}`, targetType: "match-reason", targetId: reason.factor, sentiment: "down", note: reason.label },
+                        })
+                      }
+                      className="rounded-[4px] p-0.5 text-[#d9d9d9] hover:bg-[#f5f6f9] hover:text-[#c0392b]"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  ))}
               </li>
             );
           })}
@@ -121,6 +131,7 @@ function CandidateCard({ candidate, onInvestigate }: { candidate: PrecedentCandi
 // pipeline unchanged.
 export function A2aSearchPrecedentsScreen() {
   const dispatch = useDemoDispatch();
+  const state = useDemoState();
   const navigate = useNavigate();
 
   const [filters, setFilters] = useState<PrecedentSearchFilters>({});
@@ -157,7 +168,8 @@ export function A2aSearchPrecedentsScreen() {
     navigate("a2");
   }
 
-  const results = nlResults !== null ? nlResults : facetResults;
+  const rawResults = nlResults !== null ? nlResults : facetResults;
+  const results = [...rawResults].sort((a, b) => effectiveMatchScore(state, b) - effectiveMatchScore(state, a));
   const usingNl = nlResults !== null;
 
   return (

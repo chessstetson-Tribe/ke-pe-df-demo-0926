@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { AlertTriangle, ArrowRight, ChevronDown, ChevronUp, X } from "lucide-react";
+import { AlertTriangle, ArrowRight, ChevronDown, ChevronUp, TrendingDown, TrendingUp, X } from "lucide-react";
 import { useDemoDispatch, useDemoState, useNavigate } from "@/state/DemoStateContext";
 import { NEW_MATTER } from "@/data/precedentCorpus";
+import { effectiveMatchScore, precedentVoteBoost, rejectedFactors } from "@/state/selectors";
 import { FOCUS } from "@/components/shared/focus";
 import { FeedbackButtons } from "@/components/shared/FeedbackButtons";
 import { FeedbackReasonPicker } from "@/components/shared/FeedbackReasonPicker";
@@ -15,18 +16,24 @@ export function A0OpenMatterScreen() {
   const navigate = useNavigate();
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [pickerOpenFor, setPickerOpenFor] = useState<string | null>(null);
-  const [rejectedReasons, setRejectedReasons] = useState<Set<string>>(new Set());
+
+  const rejected = rejectedFactors(state);
+  // Live-ranked, not stored — thumbs feedback (on the candidate itself, or on one of
+  // its match reasons) recomputes this on every render, so the list visibly reorders
+  // the instant feedback is given, not on the next search.
+  const ranked = [...state.precedentCandidates].sort(
+    (a, b) => effectiveMatchScore(state, b) - effectiveMatchScore(state, a),
+  );
 
   function investigate(precedentDealId: string) {
     dispatch({ type: "SELECT_PRECEDENT", precedentId: precedentDealId });
     navigate("a2");
   }
 
-  function rejectReason(candidateId: string, reason: string) {
-    setRejectedReasons((prev) => new Set(prev).add(`${candidateId}::${reason}`));
+  function rejectFactor(factor: string, label: string) {
     dispatch({
       type: "RECORD_FEEDBACK",
-      record: { id: `match-reason-${candidateId}-${reason}-${state.feedback.length}`, targetType: "match-reason", targetId: `${candidateId}::${reason}`, sentiment: "down", note: reason },
+      record: { id: `match-reason-${factor}-${state.feedback.length}`, targetType: "match-reason", targetId: factor, sentiment: "down", note: label },
     });
   }
 
@@ -59,8 +66,10 @@ export function A0OpenMatterScreen() {
             </button>
           </div>
           <div className="space-y-2">
-            {state.precedentCandidates.map((c, i) => {
+            {ranked.map((c, i) => {
               const expanded = expandedId === c.precedentDealId;
+              const score = effectiveMatchScore(state, c);
+              const boost = precedentVoteBoost(state, c.precedentDealId);
               return (
                 <div key={c.precedentDealId} className="rounded-xl border border-[rgba(0,0,0,0.08)] bg-white p-4 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
                   <div className="flex items-start justify-between gap-3">
@@ -74,8 +83,14 @@ export function A0OpenMatterScreen() {
                       </div>
                     </div>
                     <div className="flex flex-none items-center gap-1.5">
+                      {boost !== 0 && (
+                        <span className={`flex items-center gap-0.5 text-[10px] font-bold ${boost > 0 ? "text-[#10793d]" : "text-[#c0392b]"}`}>
+                          {boost > 0 ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
+                          {boost > 0 ? "boosted" : "demoted"} by feedback
+                        </span>
+                      )}
                       <span className="rounded-[4px] bg-[#ecf4ff] px-2 py-0.5 text-xs font-bold text-[#2354e8]">
-                        {c.matchScore}% match
+                        {score}% match
                       </span>
                       <div className="relative">
                         <FeedbackButtons
@@ -120,22 +135,24 @@ export function A0OpenMatterScreen() {
                   {expanded && (
                     <ul className="mt-3 space-y-1 text-xs leading-relaxed text-[#7a7a7a]">
                       {c.matchedOn.map((reason) => {
-                        const rejected = rejectedReasons.has(`${c.precedentDealId}::${reason}`);
+                        const rejectable = reason.factor !== "other";
+                        const isRejected = rejected.has(reason.factor);
                         return (
-                          <li key={reason} className="flex items-center gap-1.5">
-                            <span className={rejected ? "text-[#bbbbbb] line-through" : ""}>• {reason}</span>
-                            {rejected ? (
-                              <span className="text-[10px] font-medium text-[#9a9a9a]">noted — de-emphasizing this</span>
-                            ) : (
-                              <button
-                                type="button"
-                                title="Not relevant"
-                                onClick={() => rejectReason(c.precedentDealId, reason)}
-                                className="rounded-[4px] p-0.5 text-[#d9d9d9] hover:bg-[#f5f6f9] hover:text-[#c0392b]"
-                              >
-                                <X className="h-3 w-3" />
-                              </button>
-                            )}
+                          <li key={reason.label} className="flex items-center gap-1.5">
+                            <span className={isRejected ? "text-[#bbbbbb] line-through" : ""}>• {reason.label}</span>
+                            {rejectable &&
+                              (isRejected ? (
+                                <span className="text-[10px] font-medium text-[#9a9a9a]">noted — de-emphasizing this factor everywhere</span>
+                              ) : (
+                                <button
+                                  type="button"
+                                  title="Not relevant"
+                                  onClick={() => rejectFactor(reason.factor, reason.label)}
+                                  className="rounded-[4px] p-0.5 text-[#d9d9d9] hover:bg-[#f5f6f9] hover:text-[#c0392b]"
+                                >
+                                  <X className="h-3 w-3" />
+                                </button>
+                              ))}
                           </li>
                         );
                       })}

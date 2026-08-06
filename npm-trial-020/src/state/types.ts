@@ -40,13 +40,26 @@ export interface DocumentRef {
   type: "term-sheet" | "credit-agreement" | "commitment-letter" | "engagement-letter" | "fee-letter" | "other";
 }
 
+// A categorical tag per match reason — deliberately coarse (one per scoring
+// criterion, not per specific value) so a rejected reason can ripple to every OTHER
+// candidate that scored on the same criterion, not just this one. "other" covers
+// one-off, non-generalizable reasons (the anchor-deal credibility bonus, the
+// no-match fallback) that don't make sense to "de-emphasize" as a factor.
+export type MatchFactor = "industry" | "sponsorTier" | "covenantFlavor" | "size" | "lender" | "other";
+
+export interface MatchReason {
+  factor: MatchFactor;
+  label: string;
+  points: number;
+}
+
 export interface PrecedentCandidate {
   precedentDealId: string;
   dealName: string;
   sponsor: string;
   industry: string;
-  matchScore: number; // 0-100
-  matchedOn: string[];
+  matchScore: number; // 0-100 — the BASE score from the detector; see selectors.effectiveMatchScore for the live, feedback-adjusted score actually rendered
+  matchedOn: MatchReason[];
   summary: string;
   sourceDocRef?: DocumentRef;
 }
@@ -132,6 +145,15 @@ export interface FeedbackRecord {
   note?: string;
 }
 
+// A firm-wide definition captured live via B2's "define this term" flow — keyed by
+// term LABEL, not by deal, so defining a term once resolves it on every deal's grid
+// for the rest of the session, not just the one it was defined from.
+export interface FirmDefinition {
+  label: string;
+  definition: string;
+  authorPersona: PersonaId;
+}
+
 export interface DemoState {
   screen: ScreenId;
   authenticated: boolean;
@@ -149,5 +171,6 @@ export interface DemoState {
   crossPracticeEvents: CrossPracticeEvent[];
   pendingCrossPracticeEvents: CrossPracticeEvent[];
   feedback: FeedbackRecord[];
+  firmDefinitions: FirmDefinition[];
   dirty: Partial<Record<ScreenId, boolean>>;
 }

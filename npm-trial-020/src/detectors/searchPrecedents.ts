@@ -1,5 +1,5 @@
 import { PRECEDENT_CORPUS, SPONSOR_TIER_LABEL, type CorpusDeal, type SponsorTier } from "@/data/precedentCorpus";
-import type { PrecedentCandidate } from "@/state/types";
+import type { MatchReason, PrecedentCandidate } from "@/state/types";
 
 // Moment A2a — flexible precedent search. Per Product: Debt Finance's Stage 2 story:
 // "As an attorney, I can find prior deals by sponsor, deal size, industry, and
@@ -14,15 +14,16 @@ export interface PrecedentSearchFilters {
   sizeMax?: number;
 }
 
-function toCandidate(deal: CorpusDeal, score: number, matchedOn: string[]): PrecedentCandidate {
+function toCandidate(deal: CorpusDeal, matchedOn: MatchReason[]): PrecedentCandidate {
   const sizeLabel = `~$${(deal.dealSizeUsd / 1_000_000).toFixed(0)}M`;
+  const score = Math.min(100, matchedOn.reduce((sum, m) => sum + m.points, 0));
   return {
     precedentDealId: deal.id,
     dealName: deal.name,
     sponsor: SPONSOR_TIER_LABEL[deal.sponsorTier],
     industry: deal.industry,
-    matchScore: Math.min(100, score),
-    matchedOn: matchedOn.length ? matchedOn : ["part of the firm's broader precedent pool"],
+    matchScore: score,
+    matchedOn: matchedOn.length ? matchedOn : [{ factor: "other", label: "part of the firm's broader precedent pool", points: 0 }],
     summary: `${deal.name} — ${deal.industry}, ${SPONSOR_TIER_LABEL[deal.sponsorTier]}, ${sizeLabel} facility.`,
   };
 }
@@ -38,35 +39,30 @@ export async function searchPrecedentsByFacets(
 
   return corpus
     .map((deal) => {
-      const matchedOn: string[] = [];
-      let score = 0;
+      const matchedOn: MatchReason[] = [];
 
       if (filters.sponsorTier && deal.sponsorTier === filters.sponsorTier) {
-        score += 30;
-        matchedOn.push(`sponsor profile (${SPONSOR_TIER_LABEL[deal.sponsorTier]})`);
+        matchedOn.push({ factor: "sponsorTier", label: `sponsor profile (${SPONSOR_TIER_LABEL[deal.sponsorTier]})`, points: 30 });
       }
       if (filters.industry && deal.industry === filters.industry) {
-        score += 30;
-        matchedOn.push(`industry (${deal.industry})`);
+        matchedOn.push({ factor: "industry", label: `industry (${deal.industry})`, points: 30 });
       }
       if (filters.lender && deal.lenderNames.includes(filters.lender)) {
-        score += 30;
-        matchedOn.push(`lender (${filters.lender})`);
+        matchedOn.push({ factor: "lender", label: `lender (${filters.lender})`, points: 30 });
       }
       if (filters.sizeMin !== undefined || filters.sizeMax !== undefined) {
         const min = filters.sizeMin ?? 0;
         const max = filters.sizeMax ?? Infinity;
         if (deal.dealSizeUsd >= min && deal.dealSizeUsd <= max) {
-          score += 10;
-          matchedOn.push(`facility size ~$${(deal.dealSizeUsd / 1_000_000).toFixed(0)}M`);
+          matchedOn.push({ factor: "size", label: `facility size ~$${(deal.dealSizeUsd / 1_000_000).toFixed(0)}M`, points: 10 });
         }
       }
 
-      return { deal, score, matchedOn };
+      return { deal, matchedOn };
     })
-    .filter((r) => noFilters || r.score > 0)
-    .sort((a, b) => b.score - a.score)
-    .map(({ deal, score, matchedOn }) => toCandidate(deal, score, matchedOn));
+    .filter((r) => noFilters || r.matchedOn.length > 0)
+    .map(({ deal, matchedOn }) => toCandidate(deal, matchedOn))
+    .sort((a, b) => b.matchScore - a.matchScore);
 }
 
 function parseSizeHint(query: string): { min: number; max: number } | null {
@@ -101,39 +97,33 @@ export async function searchPrecedentsByQuery(
 
   return corpus
     .map((deal) => {
-      const matchedOn: string[] = [];
-      let score = 0;
+      const matchedOn: MatchReason[] = [];
       const industryText = deal.industry.toLowerCase();
       const lenderText = deal.lenderNames.join(" ").toLowerCase();
       const tierText = SPONSOR_TIER_LABEL[deal.sponsorTier].toLowerCase();
       const covenantText = deal.covenantFlavor.toLowerCase();
 
       for (const w of words) {
-        if (hasWord(industryText, w) && !matchedOn.some((m) => m.startsWith("industry"))) {
-          score += 15;
-          matchedOn.push(`industry (${deal.industry})`);
+        if (hasWord(industryText, w) && !matchedOn.some((m) => m.factor === "industry")) {
+          matchedOn.push({ factor: "industry", label: `industry (${deal.industry})`, points: 15 });
         }
         if (hasWord(lenderText, w)) {
-          score += 20;
-          matchedOn.push(`lender match ("${w}")`);
+          matchedOn.push({ factor: "lender", label: `lender match ("${w}")`, points: 20 });
         }
-        if (hasWord(tierText, w) && !matchedOn.some((m) => m.startsWith("sponsor"))) {
-          score += 15;
-          matchedOn.push(`sponsor profile (${SPONSOR_TIER_LABEL[deal.sponsorTier]})`);
+        if (hasWord(tierText, w) && !matchedOn.some((m) => m.factor === "sponsorTier")) {
+          matchedOn.push({ factor: "sponsorTier", label: `sponsor profile (${SPONSOR_TIER_LABEL[deal.sponsorTier]})`, points: 15 });
         }
-        if (hasWord(covenantText, w) && !matchedOn.some((m) => m.startsWith("covenant"))) {
-          score += 10;
-          matchedOn.push(`covenant flavor (${deal.covenantFlavor})`);
+        if (hasWord(covenantText, w) && !matchedOn.some((m) => m.factor === "covenantFlavor")) {
+          matchedOn.push({ factor: "covenantFlavor", label: `covenant flavor (${deal.covenantFlavor})`, points: 10 });
         }
       }
       if (sizeHint && deal.dealSizeUsd >= sizeHint.min && deal.dealSizeUsd <= sizeHint.max) {
-        score += 10;
-        matchedOn.push(`similar facility size (~$${(deal.dealSizeUsd / 1_000_000).toFixed(0)}M)`);
+        matchedOn.push({ factor: "size", label: `similar facility size (~$${(deal.dealSizeUsd / 1_000_000).toFixed(0)}M)`, points: 10 });
       }
 
-      return { deal, score, matchedOn };
+      return { deal, matchedOn };
     })
-    .filter((r) => r.score > 0)
-    .sort((a, b) => b.score - a.score)
-    .map(({ deal, score, matchedOn }) => toCandidate(deal, score, matchedOn));
+    .filter((r) => r.matchedOn.length > 0)
+    .map(({ deal, matchedOn }) => toCandidate(deal, matchedOn))
+    .sort((a, b) => b.matchScore - a.matchScore);
 }
