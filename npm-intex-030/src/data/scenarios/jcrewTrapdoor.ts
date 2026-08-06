@@ -56,7 +56,7 @@ export const JCREW_TRAPDOOR_SCENARIO: Scenario = {
       definition:
         "A stacked-investment-basket path (general basket + IP-related basket) combined with an unrestricted-subsidiary designation mechanic and an IP-transfer carve-out, that together permit moving IP collateral outside the credit group without a separate consent right.",
       author: "you",
-      scope: "org-wide — every deal, for the rest of this session",
+      scope: "org-wide — every future deal",
       sourceAnchor: "KinderCare — Amendment No. 3, §§7.02(c), 7.02(j), 7.05(f), 1.01",
     },
   },

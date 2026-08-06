@@ -1,19 +1,21 @@
-# OOB Agentic SaaS vs. Tribe — Live Explainer Demo Script (v3)
+# OOB Agentic SaaS vs. Tribe — Live Explainer Demo Script (v4)
 
-A ~4-minute core demo of the `npm-intex-030` explainer, plus an **Extras** section at the end for backup material — additional matters, deeper technical framing, and answers to likely follow-up questions. Only the Core Demo is meant to be performed live; Extras is reference material to have open in case the conversation goes somewhere specific.
+A ~5-minute core demo of the `npm-intex-030` explainer, plus an **Extras** section at the end for backup material — additional matters, deeper technical framing, and answers to likely follow-up questions. Only the Core Demo is meant to be performed live; Extras is reference material to have open in case the conversation goes somewhere specific.
 
-**Lead matter:** Financing EBITDA (the portfolio-analytics SaaS matter). It's the biggest, cleanest reveal — a first-pass "not found," corrected by an exact arithmetic identity that's sitting in the document itself. It's the safest possible opener because the punchline isn't a legal judgment call anyone could push back on; it's four numbers that add up to a fifth number, verifiably, in the text. Nothing to relitigate.
+**Lead matter:** Liens — shared/stacked baskets (the aerospace-components deal). This is the team's agreed starter: Kirkland has specifically flagged shared/stacked baskets as a known gotcha, and it's a cleaner apples-to-apples comparison than a judgment-call gap — both baskets are extracted correctly on both sides; the miss is a specific, checkable stacking mechanic, not a legal reading anyone could push back on.
 
-**Second matter:** Open Market Purchases. This is where the closed feedback loop lives — confirming the gap creates a durable, firm-wide fact, and the rerun shows it firing on a second deal with no re-analysis. It's also low-risk in the same way: the gap it names is the industry's own well-known "Serta issue," not a proprietary claim about this specific document.
+**Second matter:** Financing EBITDA (the portfolio-analytics SaaS matter). The biggest, cleanest reveal — a first-pass "not found," corrected by an exact arithmetic identity that's sitting in the document itself. Nothing to relitigate: it's four numbers that add up to a fifth number, verifiably, in the text.
+
+**Third matter:** Open Market Purchases — the learning-loop close. This is where the closed feedback loop lives — confirming the gap creates a durable, firm-wide fact, and the rerun shows it firing on a second deal with no re-analysis. Also low-risk: the gap it names is the industry's own well-known "Serta issue," not a proprietary claim about this specific document.
 
 ---
 
-## Core Demo (~4 minutes)
+## Core Demo (~5 minutes)
 
 ### 0:00 — Open with the value statement, before the app is even up
 
 **Say:**
-> What we'd like to preview for you is some features of the kind of state-of-the-art system that's bespoke and customizable to K&E's own workflows, owned end-to-end by K&E, and that starts paying off on real matters in the near term while compounding in value over time through its own feedback loops. That's what protects — and grows — K&E's own value proposition, its corpus of precedent, in a way that stays fully in your control, not locked inside someone else's platform.
+> Here's the headline, before anything else: we make provision-level precedent accessible at scale, in a system that's owned end-to-end by K&E, customized to your own workflows, and that learns from every correction your attorneys make. That's a concrete deliverable, not a vision — something that starts paying off on real matters right away, and compounds from there.
 
 **Say:**
 > And to be clear up front: we're not committing to one particular technical approach here. What you're about to see is illustrative — it's us showing you how we'd think about this problem smartly, not a spec for exactly what ships.
@@ -30,26 +32,52 @@ A ~4-minute core demo of the `npm-intex-030` explainer, plus an **Extras** secti
 ### 0:20 — Choose a matter
 
 **Say:**
-> We'll start by selecting a PE deal, or matter.
+> We'll start by selecting a PE deal, or matter. One more thing before we dive in: you'll notice deal names here are anonymized to industry — that's a firm rule about never pairing a deal name with its economics, not a limitation of the system. Every figure and citation you'll see is real.
 
-**Action:** Hover, then click the right arrow once or twice to cycle a card or two, then land on Matter 2 of 9 (the portfolio-analytics SaaS credit agreement, flagged term: Financing EBITDA).
+**Action:** Hover, then click the right arrow to cycle to Matter 7 of 9 (the aerospace-components credit agreement, flagged term: Liens — shared/stacked baskets).
+
+**Say:**
+> First up: this next section is going to show how a bespoke extraction actually catches more than a plain top-k search does — even when both sides technically "find" the right clauses.
+
+**Action:** Hover, then click "Open this matter →," then "Ask" (the question is already filled in).
+
+---
+
+### 0:50 — Segment 1 reveal: shared/stacked baskets
+
+**Say:**
+> Both sides find the same two lien baskets, correctly, dollar for dollar — a general basket and a ratio-based basket. The out-of-the-box side stops there and just adds them together. Tribe's side keeps going and finds a tail provision, well past either basket, that lets the borrower reclassify and stack one basket on top of the other at its own discretion — so the real ceiling on secured capacity is higher than simple addition, and isn't even a fixed number.
+
+**Action:** Let the reveal render; give it a beat.
+
+**Say:**
+> Before we move on — any reactions so far, or anything here you'd push back on?
+
+---
+
+### 1:30 — Change matter, Financing EBITDA
+
+**Action:** Hover, then click "Ask another question" to reset, then "Try it out" again.
+
+**Say:**
+> Next section: this is going to show the same idea from a different angle — not two baskets that look additive, but a figure that doesn't even appear to exist on a first pass.
+
+**Action:** Cycle the deal picker to Matter 2 of 9 (the portfolio-analytics SaaS credit agreement, flagged term: Financing EBITDA). Hover, then click "Open this matter →."
 
 **Say:**
 > Each of these is a real matter from a review Tribe already ran — automated extraction, paired with expert human review on our side. What we're showing is the kind of improved accuracy you can expect from a bespoke Tribe solution. But what we want out of an interactive exercise like this is the kind of expert feedback that ensures the final product will be absolute best-in-class. That feedback is the point of doing this interactively rather than just showing you slides.
 
-**Action:** Hover, then click "Open this matter →."
-
 ---
 
-### 0:50 — Workflow: open the Grid, tap the flagged term
+### 2:00 — Workflow: open the Grid, tap the flagged term
 
 **Say:**
-> Let's use the Workflow view here — the goal is for it to feel this intuitive and tap-through-simple, not like a chat window. This is the actual workflow your associates would be sitting in.
+> Let's use the Workflow view here — the goal is for it to feel this intuitive and tap-through-simple, not like a chat window. This is the actual workflow your associates would be sitting in, and we're looking at it from the Grid stage of the deal lifecycle specifically.
 
 **Action:** Hover, then click "Workflow."
 
 **Say:**
-> This is considered to be from the matter's Grid — three terms already reviewed and confirmed, and one flagged for review: Financing EBITDA.
+> Three terms already reviewed and confirmed, and one flagged for review: Financing EBITDA.
 
 **Action:** Hover, then click the "Financing EBITDA" row.
 
@@ -60,7 +88,7 @@ A ~4-minute core demo of the `npm-intex-030` explainer, plus an **Extras** secti
 
 ---
 
-### 1:20 — The reveal
+### 2:30 — Segment 2 reveal: Financing EBITDA
 
 **Say:**
 > On the left, the out-of-the-box side says "not found" — there's no line item literally called Financing EBITDA, so it stops there. On the right, Tribe's side traversed the document differently: it found four separate hard-coded quarterly figures buried in the tail of a completely different definition, added them up, and got exactly two hundred thirteen million five hundred thousand dollars — which is also this deal's own fixed incremental-debt prong, stated a few sections later. That's not an assertion. That's arithmetic, sitting right there in the text, that a keyword search was never going to connect.
@@ -72,14 +100,17 @@ A ~4-minute core demo of the `npm-intex-030` explainer, plus an **Extras** secti
 >
 > Worth naming: this is the difference between a simple agent harness bolted onto a search index, and a system that's actually schema-aware — Tribe traversed the document differently because it was built to understand this kind of provision, not just to search for the phrase.
 
+**Say:**
+> One more check-in before the last piece — how does this land, and is this the kind of gap that would actually matter to your team?
+
 ---
 
-### 2:00 — Change matter, second gap
+### 3:20 — Change matter, the learning loop
 
 **Action:** Hover, then click "Ask another question" to reset, then "Try it out" again.
 
 **Say:**
-> Now let's look at a different kind of gap — not something the out-of-the-box tool got wrong, but something nobody has written down at all yet.
+> Last section: this one shows something neither side has "gotten wrong" yet — something nobody has written down at all — and what happens once we do write it down.
 
 **Action:** Cycle the deal picker to Matter 8 of 9 (the aircraft-engine-MRO credit agreement, flagged term: Open Market Purchases). Hover, then click "Open this matter →."
 
@@ -90,7 +121,7 @@ A ~4-minute core demo of the `npm-intex-030` explainer, plus an **Extras** secti
 
 ---
 
-### 2:20 — The gap, named instead of guessed
+### 3:40 — The gap, named instead of guessed
 
 **Say:**
 > The left side answers confidently — yes, open market purchases are permitted — and never mentions anything unusual. The right side finds the same provision, but also notices that "open market purchase" itself is never actually defined anywhere in this document. That's the same undefined-term risk the market has called the Serta issue since 2020 — not a claim about this firm's judgment, just an observable fact about the drafting. Across the same fifteen-deal review, K&E hasn't set a firm-specific standard for this term in almost any of them — most deals just fall back on baseline industry convention instead.
@@ -98,11 +129,11 @@ A ~4-minute core demo of the `npm-intex-030` explainer, plus an **Extras** secti
 **Action:** Hover, then click "Set the firm-wide standard for 'open market purchase' →."
 
 **Say:**
-> This is the closed feedback loop. That click didn't just note an opinion — it created a real fact, with an author, a scope, and a source citation, sitting in a shared scaffold now.
+> This is the closed feedback loop. That click didn't just note an opinion — it created a real fact, with an author, a scope, and a source citation, sitting in a shared scaffold now. And to be clear on governance: writing to that shared standard is role-gated in the real product — it's not something every associate can do, it's routed to whoever the firm designates as the schema owner.
 
 ---
 
-### 2:50 — Compounding
+### 4:10 — Compounding
 
 **Action:** Hover, then click "Run this same question on a second deal →."
 
@@ -111,13 +142,16 @@ A ~4-minute core demo of the `npm-intex-030` explainer, plus an **Extras** secti
 
 ---
 
-### 3:20 — Wrap
+### 4:40 — Wrap
 
 **Say:**
 > One more thing worth naming — the underlying techniques — narrowing to the relevant passage before extracting, forcing everything into one fixed schema before comparing — are infrastructure Tribe already built and validated on debt finance itself, and half of it is directly reused from work we did on the M&A side of the firm. The piece that we're exploring here that's new is the precedent index, where we likewise expect to get industry-leading accuracy.
 
 **Say:**
 > So what I've shown here was bespoke and customizable to your workflows, and owned end-to-end by K&E: every fact it ever surfaces has a citation, every correction your attorneys make becomes durable, and none of it lives anywhere but in a scaffold that's yours. It pays for itself on real matters now, and it compounds — the corpus of precedent that's already your firm's edge gets more valuable every time someone uses this, instead of sitting still.
+
+**Say:**
+> One last thing worth naming: today, Kirkland's scale is itself an edge — you simply see more deals than almost anyone else, so you know market better than almost anyone else. As AI makes it easier for smaller firms to approximate that breadth, the durable edge won't be volume anymore — it'll be quality and speed on top of volume. That's what this is built to protect.
 
 **Action:** Hold on the split screen; end here.
 
@@ -127,19 +161,20 @@ A ~4-minute core demo of the `npm-intex-030` explainer, plus an **Extras** secti
 
 ### Quick index
 
-**Priority order, if you only have time for a couple of backups:** Matter 7 (Liens — shared/stacked baskets) is the must-include of the group, since Kirkland has specifically flagged stacked/shared baskets as a known gotcha. Matters 3 (MFN) and 4 (EBITDA Add-Backs) are both strong alternates — any of the three works, since all three are stronger apples-to-apples comparisons than the two "blocker" gaps, hinging on a checkable fact rather than a firm judgment call.
+**Note on Matter 1 (J.Crew-style trapdoor):** this is the least-verified matter in the set — the underlying mechanism (basket-stacking + an unrestricted-sub mechanic + an IP carve-out) is real and grounded in the document, but nobody on the team has had a lawyer pressure-test the "J.Crew-style" framing itself, and it hinges more on a legal judgment call than a checkable fact. Keep it as a genuine backup, not a first choice — and if it comes up, it's fine to hedge ("we haven't had this specific reading checked by outside counsel yet").
+
+**Priority order among the remaining backups:** Matters 3 (MFN) and 4 (EBITDA Add-Backs) are the strongest alternates — both are checkable apples-to-apples comparisons rather than judgment calls. (Liens/shared-baskets has moved into the Core Demo as the lead matter — see above, and it's dropped from this list accordingly.)
 
 | # | Matter | Flagged term | Kind | The one-line hook |
 |---|---|---|---|---|
-| 7 ★★ must-include | Aerospace-components deal | Liens (shared/stacked baskets) | Miss | Two lien baskets look additive; a tail provision lets the borrower reclassify and stack one on top of the other at its own discretion. |
 | 3 ★ | Childcare-sector deal (Amendment No. 3) | Incremental MFN | Miss | A second, identical MFN is hidden inside a different definition — and the sunset date means neither one is actually live anymore. |
 | 4 ★ | Commercial-landscaping-services deal | EBITDA Add-Backs | Miss | Confirming "no cap" on the add-back clause you found is correct *and* incomplete — a second, independently-drafted uncapped channel sits in a totally separate definition. |
-| 1 | KinderCare — Amendment No. 3 | J.Crew-style trapdoor | Gap | Stacked investment baskets + an unrestricted-sub mechanic + an IP carve-out create the same structural path at issue in the 2014 J.Crew deal — real in the document, not yet firm-flagged. |
+| 1 ⚠ | KinderCare — Amendment No. 3 | J.Crew-style trapdoor | Gap | Stacked investment baskets + an unrestricted-sub mechanic + an IP carve-out create the same structural path at issue in the 2014 J.Crew deal — real in the document, not yet firm-flagged. Least-verified matter in the set; see note above. |
 | 5 | Healthcare-products distribution deal | Asset Sale Sweep | Miss | A nearby mention of "Casualty Events" reads like confirmation that casualty proceeds are swept — they're not; the actual trigger's defined term excludes them. |
 | 6 | Security-and-alarm-monitoring deal | Restricted Debt Payments | Miss | The dollar baskets are extracted correctly and the practical answer is still wrong, because the covered-debt definition is narrower than it looks — junior-lien debt isn't actually restricted at all. |
 | 9 | A new deal — term not yet in the schema | New/unseen term handling | Gap | Ties directly to Jill's own Stage-1 question: should new terms be auto-picked-up, or does a schema owner confirm them first? Tribe routes rather than guesses either way. |
 
-*(Matters 2 and 8 are the two performed in the Core Demo.)*
+*(Matters 7, 2, and 8 are the three performed in the Core Demo.)*
 
 ---
 
@@ -152,6 +187,8 @@ Each one assumes you're starting from the split screen or the splash. General se
 ---
 
 #### Matter 1 — KinderCare, J.Crew-style trapdoor (Gap · ~45s)
+
+**Caution:** the least legally-verified matter in the set (see the note in the Quick index above). Use if asked for another example, but don't lead with it, and feel free to hedge on the specific legal reading if pressed.
 
 **Action:** Open Matter 1 of 9. Mode: Ask (question is prefilled) → hover, click "Ask."
 
@@ -206,15 +243,6 @@ Each one assumes you're starting from the split screen or the splash. General se
 
 ---
 
-#### Matter 7 — Aerospace-components deal, Liens (Miss · ~30s)
-
-**Action:** Open Matter 7 of 9. Mode: Ask → click "Ask."
-
-**Say:**
-> Both lien baskets are found correctly, and the natural assumption is you just add them together for total capacity. Tribe finds a tail provision, well past either basket, that lets the borrower reclassify and stack one basket on top of the other at its own discretion — so the real ceiling on secured capacity is higher than simple addition, and isn't even a fixed number.
-
----
-
 #### Matter 9 — New deal, term outside the schema (Gap · ~45s)
 
 **Action:** Open Matter 9 of 9. Mode: Workflow → hover, click "Workflow."
@@ -230,7 +258,7 @@ Each one assumes you're starting from the split screen or the splash. General se
 **Action:** In the split screen, hover, then click "Add this term to the firm schema →."
 
 **Say:**
-> Confirming adds it to the schema with an initial extraction hypothesis, not a guessed answer — so it's ready, not risky, the next time it shows up. This is also the "customizable" piece — the schema itself isn't fixed; it grows to match how K&E actually defines and extracts terms, so the extraction gets more bespoke to your own workflows over time, not more generic.
+> Confirming adds it to the schema with an initial extraction hypothesis, not a guessed answer — so it's ready, not risky, the next time it shows up. This is also the "customizable" piece — the schema itself isn't fixed; it grows to match how K&E actually defines and extracts terms, so the extraction gets more bespoke to your own workflows over time, not more generic. And as with the standard-setting step in the core demo, this is role-gated too — not something any associate can do unilaterally.
 
 ---
 
@@ -269,3 +297,13 @@ One-line summary if pressed for time: two of three techniques inherit real, work
 ### If asked: "What happens if I disagree with one of these?"
 
 That's exactly the "Is this extraction right?" thumbs control on every term in Workflow mode, and the confirm step on every undefined-term gap — both are real product surfaces for an attorney to correct something, not just decorative. In the full DF Docket product, that correction becomes a durable fact the same way confirming a gap does here.
+
+### If asked: "How does this compare to other AI legal-tech tools already doing extraction with citations?"
+
+Some tools in this space already do citation-backed extraction and expert-review workflows — that alone isn't the differentiator, and we shouldn't imply otherwise. What we believe actually differs:
+
+1. **The schema is co-developed with K&E and keeps growing** — not a preset, fixed library of terms that has to wait on a vendor's roadmap to add K&E-specific language. Matter 9 (new/unseen term handling) is the concrete demonstration of this.
+2. **Analysis stays segmented by deal type and precedent, not blended into an average** that can quietly wash out real market variation across deal types.
+3. **It's owned end-to-end by K&E**, not living inside another firm's platform or roadmap.
+
+Where we're honestly weaker: we don't yet have K&E's own institutional legal judgment baked in the way a tool built by former practicing lawyers might. That's exactly why the correction/confirm loop in this demo isn't decorative — it's how that judgment gets captured going forward.

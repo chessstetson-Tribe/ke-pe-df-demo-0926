@@ -71,7 +71,7 @@ export function TribePane({
           {tribe.assertions.map((line, i) => (
             <div
               key={line}
-              className="rounded-[4px] border px-2 py-1 font-mono text-[10px]"
+              className="rounded-[4px] border px-2 py-1 font-mono text-[11px]"
               style={{ borderColor: "var(--tribe-border)", color: "var(--tribe-text)", animation: `chunk-flood-in 0.3s ease-out ${i * 0.06}s backwards` }}
             >
               {line}
@@ -123,14 +123,17 @@ export function TribePane({
             ) : (
               <div className="mt-3 flex items-start gap-1.5 rounded-lg bg-[#f1ffed] px-2.5 py-2 text-xs text-[#10793d]">
                 <CheckCircle2 className="mt-0.5 h-3 w-3 flex-none" />
-                <span>
-                  Added to the shared scaffold — set by {fact.author}, scope: {fact.scope}. Source: {fact.sourceAnchor}.
-                </span>
+                <div>
+                  <div className="font-bold">Added to scaffold.</div>
+                  <div className="mt-0.5 text-[11px] text-[#3f9a63]">
+                    Set by {fact.author} · {fact.scope} · source: {fact.sourceAnchor}
+                  </div>
+                </div>
               </div>
             )}
 
             {tribe.scaleNote && (
-              <p className="mt-2.5 text-[11px] leading-relaxed text-[#9a9a9a]">{tribe.scaleNote}</p>
+              <p className="mt-2.5 text-[12px] leading-relaxed text-[#8a8a8a]">{tribe.scaleNote}</p>
             )}
           </div>
         )}

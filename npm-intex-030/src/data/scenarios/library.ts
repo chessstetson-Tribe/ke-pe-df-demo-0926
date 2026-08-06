@@ -319,8 +319,8 @@ export const OPEN_MARKET_PURCHASE_SCENARIO: Scenario = {
       definition:
         "A purchase of the borrower's own debt executed through ordinary secondary-market trading channels, at prevailing market prices, without a Dutch-auction or negotiated-tender process and without using MNPI obtained as a lender.",
       author: "you",
-      scope: "org-wide — every deal, for the rest of this session",
-      sourceAnchor: "aircraft-engine-MRO credit agreement, §10.07(j); pattern confirmed across a 15-deal review — no firm-specific standard set in nearly any of them",
+      scope: "org-wide — every future deal",
+      sourceAnchor: "aircraft-engine-MRO credit agreement, §10.07(j)",
     },
   },
   rerun: {
