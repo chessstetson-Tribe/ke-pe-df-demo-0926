@@ -121,7 +121,7 @@ A ~5-minute core demo of the `npm-intex-030` explainer, plus an **Extras** secti
 ### 3:40 — The gap, named instead of guessed
 
 **Say:**
-> The left side answers confidently — yes, open market purchases are permitted — and never mentions anything unusual. The right side finds the same provision, but also notices that "open market purchase" itself is never actually defined anywhere in this document. That's the same undefined-term risk the market has called the Serta issue since 2020 — not a claim about this firm's judgment, just an observable fact about the drafting. Across the same fifteen-deal review, we don't have access to a firm-specific standard for this term in almost any of them — most deals just fall back on baseline industry convention instead.
+> The left side answers confidently — yes, open market purchases are permitted — and never mentions anything unusual. The right side finds the same provision, but also notices that "open market purchase" itself is never actually defined anywhere in this document. That's the same undefined-term risk the market has called the Serta issue since 2020. Across the same fifteen-deal review, K&E we don't have access to a firm-specific standard for this term in almost any of them — most deals just fall back on baseline industry convention instead.
 
 **Action:** Hover, then click "Set the firm-wide standard for 'open market purchase' →."
 
