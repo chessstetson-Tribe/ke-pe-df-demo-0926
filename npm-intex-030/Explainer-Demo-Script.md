@@ -15,15 +15,12 @@ A ~5-minute core demo of the `npm-intex-030` explainer, plus an **Extras** secti
 ### 0:00 — Open with the value statement, before the app is even up
 
 **Say:**
-> Here's the headline, before anything else: we make provision-level precedent accessible at scale, in a system that's owned end-to-end by K&E, customized to your own workflows, and that learns from every correction your attorneys make. That's a concrete deliverable, not a vision — something that starts paying off on real matters right away, and compounds from there.
-
-**Say:**
-> And to be clear up front: we're not committing to one particular technical approach here. What you're about to see is illustrative — it's us showing you how we'd think about this problem smartly, not a spec for exactly what ships.
+> The headline of this interactive exploration is that we make provision-level precedent accessible at scale, in a system that's owned end-to-end by K&E, customized to your own workflows, and that learns from every correction your attorneys make. That's a concrete deliverable that starts paying off on real matters right away, and compounds from there.
 
 **Action:** Load the app. Splash modal is up.
 
 **Say:**
-> Even though this is live software, we thought that rather than showing you a traditional UI/UX demo, we'd run an explainer that contrasts what you might expect from a plain-vanilla, out-of-the-box AI product — the kind you'd get from a conventional pipeline or SaaS provider — with the K&E-first product you can expect from Tribe.
+> But at this stage we're not showing you a traditional UI/UX — this is an *explainer* that contrasts what you might expect from a plain-vanilla, out-of-the-box AI product — the kind you'd get from a conventional pipeline or SaaS provider — with the K&E-first product you can expect from Tribe. And more than anything it's an invitation to give us feedback, which is an early form of our learning loop.
 
 **Action:** Hover, then click "Try it out."
 
@@ -124,7 +121,7 @@ A ~5-minute core demo of the `npm-intex-030` explainer, plus an **Extras** secti
 ### 3:40 — The gap, named instead of guessed
 
 **Say:**
-> The left side answers confidently — yes, open market purchases are permitted — and never mentions anything unusual. The right side finds the same provision, but also notices that "open market purchase" itself is never actually defined anywhere in this document. That's the same undefined-term risk the market has called the Serta issue since 2020 — not a claim about this firm's judgment, just an observable fact about the drafting. Across the same fifteen-deal review, K&E hasn't set a firm-specific standard for this term in almost any of them — most deals just fall back on baseline industry convention instead.
+> The left side answers confidently — yes, open market purchases are permitted — and never mentions anything unusual. The right side finds the same provision, but also notices that "open market purchase" itself is never actually defined anywhere in this document. That's the same undefined-term risk the market has called the Serta issue since 2020 — not a claim about this firm's judgment, just an observable fact about the drafting. Across the same fifteen-deal review, we don't have access to a firm-specific standard for this term in almost any of them — most deals just fall back on baseline industry convention instead.
 
 **Action:** Hover, then click "Set the firm-wide standard for 'open market purchase' →."
 
